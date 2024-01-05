@@ -66,7 +66,18 @@ npm install --save-dev ts-node tsconfig-paths
 **And now we can run our seed.ts file with that (TODO: to dev):**
 
 ```sh
-npx ts-node --require tsconfig-paths/register prisma/seed.ts
+node --loader ts-node/esm -r tsconfig-paths/register prisma/seed.ts
 ```
 
+But with
+
+```sh
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    ...
+  },
+  ...
+}
+```
 .....

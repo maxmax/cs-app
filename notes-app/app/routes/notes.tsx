@@ -1,5 +1,10 @@
 import type { LinksFunction } from "@remix-run/node";
-import { Link, Outlet } from "@remix-run/react";
+import { json } from "@remix-run/node";
+import {
+  Link,
+  Outlet,
+  useLoaderData,
+} from "@remix-run/react";
 
 import stylesUrl from "~/styles/notes.css";
 
@@ -7,7 +12,27 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesUrl },
 ];
 
+import { db } from "~/utils/db.server";
+
+// export const loader = async () => {
+//  return json({
+//    noteListItems: await db.note.findMany(),
+//  });
+// };
+
+export const loader = async () => {
+  return json({
+    noteListItems: await db.note.findMany({
+      orderBy: { createdAt: "desc" },
+      select: { id: true, name: true },
+      take: 3,
+    }),
+  });
+};
+
 export default function NotesRoute() {
+  const data = useLoaderData<typeof loader>();
+
   return (
     <div className="notes-layout">
       <header className="notes-header">
@@ -30,9 +55,11 @@ export default function NotesRoute() {
             <Link to=".">Get a random note</Link>
             <p>Here are a few more notes to check out:</p>
             <ul>
-              <li>
-                <Link to="some-note-id">Hippo</Link>
-              </li>
+              {data.noteListItems.map(({ id, name }) => (
+                <li key={id}>
+                  <Link to={id}>{name}</Link>
+                </li>
+              ))}
             </ul>
             <Link to="new" className="button">
               Add your own
