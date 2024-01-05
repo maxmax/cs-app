@@ -2,11 +2,23 @@ import { PrismaClient } from "@prisma/client";
 const db = new PrismaClient();
 
 async function seed() {
-  await Promise.all(
-    getNotes().map((note) => {
-      return db.note.create({ data: note });
-    })
-  );
+ const kody = await db.user.create({
+  data: {
+   username: "kody",
+   // це захешована версія "twixrox"
+   passwordHash: "$2b$10$K7L1OJ45/4Y2nIvhRVpCe.FSmhDdWoXehVzJptJ/op0lSsvqNu/1u"
+  },
+ });
+
+ await Promise.all(
+  getNotes().map(async (note) => {
+   const data = { authorId: kody.id, ...note };
+   await db.note.create({ data });
+  })
+ );
+
+ // Закриваємо підключення до бази даних після виконання seed
+ await db.$disconnect();
 }
 
 seed();

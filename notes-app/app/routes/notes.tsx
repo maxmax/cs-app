@@ -1,4 +1,4 @@
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   Link,
@@ -13,6 +13,7 @@ export const links: LinksFunction = () => [
 ];
 
 import { db } from "~/utils/db.server";
+import { getUser } from "~/utils/session.server";
 
 // export const loader = async () => {
 //  return json({
@@ -20,14 +21,27 @@ import { db } from "~/utils/db.server";
 //  });
 // };
 
-export const loader = async () => {
-  return json({
-    noteListItems: await db.note.findMany({
-      orderBy: { createdAt: "desc" },
-      select: { id: true, name: true },
-      take: 3,
-    }),
+// export const loader = async () => {
+//  return json({
+//    noteListItems: await db.note.findMany({
+//      orderBy: { createdAt: "desc" },
+//      select: { id: true, name: true },
+//      take: 3,
+//    }),
+//  });
+// };
+
+export const loader = async ({
+  request,
+}: LoaderFunctionArgs) => {
+  const noteListItems = await db.note.findMany({
+    orderBy: { createdAt: "desc" },
+    select: { id: true, name: true },
+    take: 5,
   });
+  const user = await getUser(request);
+
+  return json({ noteListItems, user });
 };
 
 export default function NotesRoute() {
@@ -47,6 +61,18 @@ export default function NotesRoute() {
               <span className="logo-medium">Notes</span>
             </Link>
           </h1>
+          {data.user ? (
+            <div className="user-info">
+              <span>{`Hi ${data.user.username}`}</span>
+              <form action="/logout" method="post">
+                <button type="submit" className="button">
+                  Logout
+                </button>
+              </form>
+            </div>
+          ) : (
+            <Link to="/login">Login</Link>
+          )}
         </div>
       </header>
       <main className="notes-main">

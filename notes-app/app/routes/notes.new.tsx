@@ -4,6 +4,7 @@ import { useActionData } from "@remix-run/react";
 
 import { db } from "~/utils/db.server";
 import { badRequest } from "~/utils/request.server";
+import { requireUserId } from "~/utils/session.server";
 
 function validateNoteContent(content: string) {
   if (content.length < 10) {
@@ -20,6 +21,7 @@ function validateNoteName(name: string) {
 export const action = async ({
   request,
 }: ActionFunctionArgs) => {
+  const userId = await requireUserId(request);
   const form = await request.formData();
   const content = form.get("content");
   const name = form.get("name");
@@ -49,8 +51,10 @@ export const action = async ({
       formError: null,
     });
   }
-
-  const note = await db.note.create({ data: fields });
+  
+  const note = await db.note.create({
+    data: { ...fields, authorId: userId },
+  });
   return redirect(`/notes/${note.id}`);
 };
 

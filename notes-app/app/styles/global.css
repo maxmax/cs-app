@@ -54,7 +54,7 @@ body {
 
 [data-light] {
   --color-invalid: hsl(356, 70%, 39%);
-  color: var(--color-background);
+  /*color: var(--color-background);*/
   background-color: var(--color-foreground);
 }
 

@@ -57,27 +57,14 @@ npx prisma init --datasource-provider sqlite
 npx prisma db push
 ```
 
-**Install ts-node and tsconfig-paths as dev dependencies:**
-
 ```sh
-npm install --save-dev ts-node tsconfig-paths
+npm run seed
 ```
 
-**And now we can run our seed.ts file with that (TODO: to dev):**
+*If you're having trouble, run npx prisma studio to see the database in the browser. It's possible you don't have any data because you forgot to run npx prisma db seed*
 
 ```sh
-node --loader ts-node/esm -r tsconfig-paths/register prisma/seed.ts
+run npx prisma
 ```
 
-But with
-
-```sh
-{
-  "compilerOptions": {
-    "module": "ESNext",
-    ...
-  },
-  ...
-}
-```
-.....
+### Auth
