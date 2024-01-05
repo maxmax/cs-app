@@ -11,6 +11,7 @@
   --color-background: hsl(0deg 0% 97.53%);
   --color-links: hsl(var(--hs-links) 50%);
   --color-links-hover: hsl(var(--hs-links) 45%);
+  --color-links-error: hsl(0deg 60% 50%);
   --color-border: hsl(0deg 0% 70.06%);
   --color-invalid: hsl(356, 100%, 71%);
   /*--gradient-background: radial-gradient(
@@ -190,6 +191,10 @@ h6 {
 
 .button:focus:not(:focus-visible) {
   outline: none;
+}
+
+.button.button-error {
+  background-color: var(--color-links-error);
 }
 
 /* forms */

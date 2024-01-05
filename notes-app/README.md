@@ -78,3 +78,11 @@ I'm sorry, but there's no way to avoid errors at some point. Servers fall over, 
 Fortunately, error handling in Remix is mind-blowing. Perhaps you've already dabbled with React's Error Boundary feature. In Remix, your route modules can export an `ErrorBoundary` component, and it will be utilized. But guess what? It's even cooler because it also works on the server! And not just that, it handles errors in loaders and actions too!
 
 *What I love about this is that in the case of the children routes, the only unusable part of the app is the part that actually broke. The rest of the app is completely interactive. There's another point for the user's experience!*
+
+### Expected errors
+
+At times, users pull off stunts that no longer impress us. If they aren't performing miracles in the validation world, they're probably just checking their status – authenticated (status 401), authorized (status 403), or perhaps simply looking for something that isn't there (status 404).
+
+One might assume that unexpected errors are like home heating breakdowns, a 500-level error (server error), while expected errors are more like when the cat decides to redecorate the same spot again, a 404 (client error).
+
+To identify responses to unsuccessful client actions, Remix provides us with the handy `isRouteErrorResponse` spinner function. So, if the server detects a problem, it throws a Response. Then Remix recognizes this thrown response and replays our `ErrorBoundary` Since you can throw anything, this `isRouteErrorResponse` is like a real mischief detector, determining whether it's a genuine Response or just the cat leaving you a surprise. 🦍

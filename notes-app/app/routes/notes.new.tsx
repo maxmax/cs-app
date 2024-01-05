@@ -1,10 +1,28 @@
-import type { ActionFunctionArgs } from "@remix-run/node";
-import { redirect } from "@remix-run/node";
-import { useActionData } from "@remix-run/react";
+import type {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+} from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import {
+  isRouteErrorResponse,
+  Link,
+  useActionData,
+  useRouteError,
+} from "@remix-run/react";
 
 import { db } from "~/utils/db.server";
 import { badRequest } from "~/utils/request.server";
-import { requireUserId } from "~/utils/session.server";
+import { getUserId, requireUserId } from "~/utils/session.server";
+
+export const loader = async ({
+  request,
+}: LoaderFunctionArgs) => {
+  const userId = await getUserId(request);
+  if (!userId) {
+    throw new Response("Unauthorized", { status: 401 });
+  }
+  return json({});
+};
 
 function validateNoteContent(content: string) {
   if (content.length < 10) {
@@ -21,13 +39,10 @@ function validateNoteName(name: string) {
 export const action = async ({
   request,
 }: ActionFunctionArgs) => {
-  // throw new Error("Testing Error Boundary");
   const userId = await requireUserId(request);
   const form = await request.formData();
   const content = form.get("content");
   const name = form.get("name");
-  // we do this type check to be extra sure and to make TypeScript happy
-  // we'll explore validation next!
   if (
     typeof content !== "string" ||
     typeof name !== "string"
@@ -43,7 +58,6 @@ export const action = async ({
     content: validateNoteContent(content),
     name: validateNoteName(name),
   };
-
   const fields = { content, name };
   if (Object.values(fieldErrors).some(Boolean)) {
     return badRequest({
@@ -64,7 +78,7 @@ export default function NewNoteRoute() {
 
   return (
     <div>
-      <h4>Add note</h4>
+      <p>Add your own hilarious note</p>
       <form method="post">
         <div>
           <label>
@@ -138,6 +152,17 @@ export default function NewNoteRoute() {
 }
 
 export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error) && error.status === 401) {
+    return (
+      <div className="error-container">
+        <p>You must be logged in to create a note.</p>
+        <Link to="/login">Login</Link>
+      </div>
+    );
+  }
+
   return (
     <div className="error-container">
       Something unexpected went wrong. Sorry about that.
