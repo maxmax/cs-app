@@ -14,6 +14,7 @@ import { badRequest } from "~/utils/request.server";
 import {
   createUserSession,
   login,
+  register,
 } from "~/utils/session.server";
 
 export const links: LinksFunction = () => [
@@ -77,7 +78,6 @@ export const action = async ({
 
   switch (loginType) {
     case "login": {
-      // login to get the user
       const user = await login({ username, password });
       console.log({ user });
       if (!user) {
@@ -88,14 +88,7 @@ export const action = async ({
             "Username/Password combination is incorrect",
         });
       }
-
       return createUserSession(user.id, redirectTo);
-
-      return badRequest({
-        fieldErrors: null,
-        fields,
-        formError: "Not implemented",
-      });
     }
     case "register": {
       const userExists = await db.user.findFirst({
@@ -108,13 +101,16 @@ export const action = async ({
           formError: `User with username ${username} already exists`,
         });
       }
-      // create the user
-      // create their session and redirect to /notes
-      return badRequest({
-        fieldErrors: null,
-        fields,
-        formError: "Not implemented",
-      });
+      const user = await register({ username, password });
+      if (!user) {
+        return badRequest({
+          fieldErrors: null,
+          fields,
+          formError:
+            "Something went wrong trying to create a new user.",
+        });
+      }
+      return createUserSession(user.id, redirectTo);
     }
     default: {
       return badRequest({
