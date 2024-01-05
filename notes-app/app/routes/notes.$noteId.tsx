@@ -21,7 +21,7 @@ export default function NoteRoute() {
 
   return (
     <div>
-      <p>Here's your note:</p>
+      <h4>Here's your note:</h4>
       <p>{data.note.content}</p>
       <Link to=".">"{data.note.name}" Permalink</Link>
     </div>
