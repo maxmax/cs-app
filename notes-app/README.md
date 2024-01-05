@@ -68,3 +68,5 @@ run npx prisma
 ```
 
 ### Auth
+
+**After `npm run seed` you can login as username - kody & password - twixrox, but here you can create your own kitten or tiger — you're already a master of registration and authorization at this stage! 😺🐯**
