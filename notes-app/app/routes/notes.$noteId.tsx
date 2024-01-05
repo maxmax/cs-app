@@ -1,6 +1,10 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import {
+  Link,
+  useLoaderData,
+  useParams,
+} from "@remix-run/react";
 
 import { db } from "~/utils/db.server";
 
@@ -24,6 +28,16 @@ export default function NoteRoute() {
       <h4>Here's your note:</h4>
       <p>{data.note.content}</p>
       <Link to=".">"{data.note.name}" Permalink</Link>
+    </div>
+  );
+}
+
+export function ErrorBoundary() {
+  const { noteId } = useParams();
+  return (
+    <div className="error-container">
+      There was an error loading joke by the id "${noteId}".
+      Sorry.
     </div>
   );
 }

@@ -70,3 +70,11 @@ run npx prisma
 ### Auth
 
 **After `npm run seed` you can login as username - kody & password - twixrox, but here you can create your own kitten or tiger — you're already a master of registration and authorization at this stage! 😺🐯**
+
+### Unexpected errors
+
+I'm sorry, but there's no way to avoid errors at some point. Servers fall over, co-workers use // @ts-ignore, and so on. So let's just embrace the possibility of unexpected errors and deal with them. Or just grab a pillow and close your eyes – that's an option too. 🗿
+
+Fortunately, error handling in Remix is mind-blowing. Perhaps you've already dabbled with React's Error Boundary feature. In Remix, your route modules can export an `ErrorBoundary` component, and it will be utilized. But guess what? It's even cooler because it also works on the server! And not just that, it handles errors in loaders and actions too!
+
+*What I love about this is that in the case of the children routes, the only unusable part of the app is the part that actually broke. The rest of the app is completely interactive. There's another point for the user's experience!*
