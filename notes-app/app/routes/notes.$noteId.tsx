@@ -1,11 +1,29 @@
+import type { LoaderFunctionArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
+
+import { db } from "~/utils/db.server";
+
+export const loader = async ({
+  params,
+}: LoaderFunctionArgs) => {
+  const note = await db.note.findUnique({
+    where: { id: params.noteId },
+  });
+  if (!note) {
+    throw new Error("Note not found");
+  }
+  return json({ note });
+};
+
 export default function NoteRoute() {
+  const data = useLoaderData<typeof loader>();
+
   return (
     <div>
-      <p>Here's your hilarious note:</p>
-      <p>
-        Why don't you find hippopotamuses hiding in trees?
-        They're really good at it.
-      </p>
+      <p>Here's your note:</p>
+      <p>{data.note.content}</p>
+      <Link to=".">"{data.note.name}" Permalink</Link>
     </div>
   );
 }
