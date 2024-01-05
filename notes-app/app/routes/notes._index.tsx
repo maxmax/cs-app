@@ -4,6 +4,7 @@ import { Link, useLoaderData } from "@remix-run/react";
 import { db } from "~/utils/db.server";
 
 export const loader = async () => {
+  // throw new Error("Testing Error Boundary");
   const count = await db.note.count();
   const randomRowNumber = Math.floor(Math.random() * count);
   const [randomNote] = await db.note.findMany({
@@ -23,6 +24,14 @@ export default function NotesIndexRoute() {
       <Link to={data.randomNote.id}>
         "{data.randomNote.name}" Permalink
       </Link>
+    </div>
+  );
+}
+
+export function ErrorBoundary() {
+  return (
+    <div className="error-container">
+      I did a whoopsies.
     </div>
   );
 }

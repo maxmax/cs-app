@@ -21,6 +21,7 @@ function validateNoteName(name: string) {
 export const action = async ({
   request,
 }: ActionFunctionArgs) => {
+  // throw new Error("Testing Error Boundary");
   const userId = await requireUserId(request);
   const form = await request.formData();
   const content = form.get("content");
@@ -51,7 +52,7 @@ export const action = async ({
       formError: null,
     });
   }
-  
+
   const note = await db.note.create({
     data: { ...fields, authorId: userId },
   });
@@ -132,6 +133,14 @@ export default function NewNoteRoute() {
           </button>
         </div>
       </form>
+    </div>
+  );
+}
+
+export function ErrorBoundary() {
+  return (
+    <div className="error-container">
+      Something unexpected went wrong. Sorry about that.
     </div>
   );
 }
