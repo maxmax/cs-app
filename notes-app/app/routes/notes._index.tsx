@@ -18,7 +18,7 @@ export default function NotesIndexRoute() {
 
   return (
     <div>
-      <p>Here's a random note:</p>
+      <h4>Here's a random note:</h4>
       <p>{data.randomNote.content}</p>
       <Link to={data.randomNote.id}>
         "{data.randomNote.name}" Permalink
