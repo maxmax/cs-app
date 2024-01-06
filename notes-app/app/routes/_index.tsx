@@ -23,10 +23,16 @@ export default function IndexRoute() {
         <h1>
           Remix <span>Notes!</span>
         </h1>
+        <br />
         <nav>
           <ul>
             <li>
               <Link to="notes">Read Notes</Link>
+            </li>
+            <li>
+              <Link reloadDocument to="/notes.rss">
+                RSS
+              </Link>
             </li>
           </ul>
         </nav>
