@@ -61,10 +61,10 @@ npx prisma db push
 npm run seed
 ```
 
-*If you're having trouble, run npx prisma studio to see the database in the browser. It's possible you don't have any data because you forgot to run npx prisma db seed*
+*If you're having trouble, run `npx prisma studio` to see the database in the browser. It's possible you don't have any data because you forgot to run `npx prisma db seed`*
 
 ```sh
-run npx prisma
+npx prisma studio
 ```
 
 ### Auth
@@ -98,3 +98,20 @@ An SEO expert is like a treasure hunter in the world of search queries. They sea
 At times, we may desire our routes to display content beyond an HTML document. For instance, you might have an endpoint that produces a social image for a blog post, generates an image for a product, provides CSV data for a report, or serves an RSS feed, sitemap, or perhaps you wish to implement API routes for a mobile app, or any other functionality.
 
 *Make a /jokes.rss route.*
+
+### Postgres db
+### Deploy with Postgres
+
+We have already initialized the Prisma project.
+Replace DATABASE_URL with your actual PostgreSQL connection string.
+
+For the Prisma wiki with PostgreSQL, your schema.prisma file will look something like this:
+
+```bash
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+```
+
+*We also already have a database running somewhere, for example in our docker-compose-pg.yml, if not, launch it*
