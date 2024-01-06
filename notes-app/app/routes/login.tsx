@@ -1,6 +1,7 @@
 import type {
   ActionFunctionArgs,
   LinksFunction,
+  MetaFunction,
 } from "@remix-run/node";
 import {
   Link,
@@ -20,6 +21,15 @@ import {
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesUrl },
 ];
+
+export const meta: MetaFunction = () => {
+  const description = "Login to submit your own notes to Remix Notes!";
+
+  return [
+    { name: "description", content: description },
+    { title: "Remix Jokes | Notes" },
+  ];
+};
 
 function validateUsername(username: string) {
   if (username.length < 3) {

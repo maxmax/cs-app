@@ -1,6 +1,7 @@
 import type {
   LoaderFunctionArgs,
   ActionFunctionArgs,
+  MetaFunction,
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import {
@@ -13,6 +14,22 @@ import {
 
 import { db } from "~/utils/db.server";
 import { getUserId, requireUserId } from "~/utils/session.server";
+
+export const meta: MetaFunction<typeof loader> = ({
+  data,
+}) => {
+  const { description, title } = data
+    ? {
+        description: `Enjoy the "${data.note.name}" note and much more`,
+        title: `"${data.note.name}" note`,
+      }
+    : { description: "No note found", title: "No note" };
+
+  return [
+    { name: "description", content: description },
+    { title },
+  ];
+};
 
 export const loader = async ({
   params,
