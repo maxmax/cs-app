@@ -91,6 +91,13 @@ export default function NotesRoute() {
           </div>
         </div>
       </main>
+      <footer className="notes-footer">
+        <div className="container">
+          <Link reloadDocument to="/notes.rss">
+            RSS
+          </Link>
+        </div>
+      </footer>
     </div>
   );
 }

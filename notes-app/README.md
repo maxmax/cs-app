@@ -92,3 +92,9 @@ To identify responses to unsuccessful client actions, Remix provides us with the
 An SEO expert is like a treasure hunter in the world of search queries. They search for keyword treasures worthy of royal recognition from Google. But remember, not all treasures look like gold at first glance – some need to be polished with meta-tags!
 
 "We are responsible for rendering everything from <html> to </html>, so we must ensure that these meta tags are displayed in the <head> of the <html>. That's why Remix provides us with a Meta component. `MetaFunction`"
+
+### Resource Routes
+
+At times, we may desire our routes to display content beyond an HTML document. For instance, you might have an endpoint that produces a social image for a blog post, generates an image for a product, provides CSV data for a report, or serves an RSS feed, sitemap, or perhaps you wish to implement API routes for a mobile app, or any other functionality.
+
+*Make a /jokes.rss route.*
