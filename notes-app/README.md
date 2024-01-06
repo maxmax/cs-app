@@ -86,3 +86,9 @@ At times, users pull off stunts that no longer impress us. If they aren't perfor
 One might assume that unexpected errors are like home heating breakdowns, a 500-level error (server error), while expected errors are more like when the cat decides to redecorate the same spot again, a 404 (client error).
 
 To identify responses to unsuccessful client actions, Remix provides us with the handy `isRouteErrorResponse` spinner function. So, if the server detects a problem, it throws a Response. Then Remix recognizes this thrown response and replays our `ErrorBoundary` Since you can throw anything, this `isRouteErrorResponse` is like a real mischief detector, determining whether it's a genuine Response or just the cat leaving you a surprise. 🦍
+
+### SEO with Meta tags
+
+An SEO expert is like a treasure hunter in the world of search queries. They search for keyword treasures worthy of royal recognition from Google. But remember, not all treasures look like gold at first glance – some need to be polished with meta-tags!
+
+"We are responsible for rendering everything from <html> to </html>, so we must ensure that these meta tags are displayed in the <head> of the <html>. That's why Remix provides us with a Meta component. `MetaFunction`"
