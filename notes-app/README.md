@@ -115,3 +115,30 @@ datasource db {
 ```
 
 *We also already have a database running somewhere, for example in our docker-compose-pg.yml, if not, launch it*
+
+```sh
+DATABASE_URL="postgresql://tigerprod:123456@localhost:5432/note_pg?schema=public"
+```
+*We have already edited the schema.prisma file to match our PostgreSQL database.*
+
+**Apply migrations:**
+*Run the command to apply the migrations:*
+
+```sh
+npx prisma migrate dev
+```
+*This will create the tables in your database defined in your schema.prisma file.*
+
+**Stagnation of migration:**
+```sh
+npx prisma migrate deploy
+```
+*After completing the migration, you can save it to the database with the command:*
+
+**Generate Prisma Client:**
+*Run the command to generate Prisma Client:*
+
+```sh
+npx prisma generate
+```
+*This will create a Prisma client that you can use in your code to interact with the database.*
