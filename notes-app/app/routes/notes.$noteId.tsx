@@ -5,12 +5,15 @@ import type {
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import {
+  Form,
   Link,
   useLoaderData,
   useParams,
   isRouteErrorResponse,
   useRouteError,
 } from "@remix-run/react";
+
+import { NoteDisplay } from "~/components/note";
 
 import { db } from "~/utils/db.server";
 import { getUserId, requireUserId } from "~/utils/session.server";
@@ -85,23 +88,7 @@ export default function NoteRoute() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <div>
-      <h4>Here's your note:</h4>
-      <p>{data.note.content}</p>
-      <Link to=".">"{data.note.name}" Permalink</Link>
-      {data.isOwner ? (
-        <form method="post">
-          <button
-            className="button button-error"
-            name="intent"
-            type="submit"
-            value="delete"
-          >
-            Delete
-          </button>
-        </form>
-      ) : null}
-    </div>
+    <NoteDisplay isOwner={data.isOwner} note={data.note} />
   );
 }
 

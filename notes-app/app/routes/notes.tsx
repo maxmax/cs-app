@@ -5,6 +5,7 @@ import type {
 } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
+  Form,
   Link,
   Outlet,
   useLoaderData,
@@ -59,11 +60,11 @@ export default function NotesRoute() {
           {data.user ? (
             <div className="user-info">
               <span>{`Hi ${data.user.username}`}</span>
-              <form action="/logout" method="post">
+              <Form action="/logout" method="post">
                 <button type="submit" className="button">
                   Logout
                 </button>
-              </form>
+              </Form>
             </div>
           ) : (
             <Link to="/login">Login</Link>
@@ -78,7 +79,7 @@ export default function NotesRoute() {
             <ul>
               {data.noteListItems.map(({ id, name }) => (
                 <li key={id}>
-                  <Link to={id}>{name}</Link>
+                  <Link prefetch="intent" to={id}>{name}</Link>
                 </li>
               ))}
             </ul>

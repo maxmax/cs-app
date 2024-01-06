@@ -4,11 +4,15 @@ import type {
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import {
+  Form,
   isRouteErrorResponse,
   Link,
   useActionData,
+  useNavigation,
   useRouteError,
 } from "@remix-run/react";
+
+import { NoteDisplay } from "~/components/note";
 
 import { db } from "~/utils/db.server";
 import { badRequest } from "~/utils/request.server";
@@ -75,11 +79,31 @@ export const action = async ({
 
 export default function NewNoteRoute() {
   const actionData = useActionData<typeof action>();
+  const navigation = useNavigation();
+
+  if (navigation.formData) {
+    const content = navigation.formData.get("content");
+    const name = navigation.formData.get("name");
+    if (
+      typeof content === "string" &&
+      typeof name === "string" &&
+      !validateNoteContent(content) &&
+      !validateNoteName(name)
+    ) {
+      return (
+        <NoteDisplay
+          canDelete={false}
+          isOwner={true}
+          note={{ name, content }}
+        />
+      );
+    }
+  }
 
   return (
     <div>
       <p>Add your own hilarious note</p>
-      <form method="post">
+      <Form method="post">
         <div>
           <label>
             Name:{" "}
@@ -146,7 +170,7 @@ export default function NewNoteRoute() {
             Add
           </button>
         </div>
-      </form>
+      </Form>
     </div>
   );
 }
