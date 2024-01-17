@@ -17,7 +17,7 @@ interface BasicCardProps {
 
 const BasicCard: React.FC<BasicCardProps> = ({ date, title, author, content, link }) => {
   return (
-    <Card sx={{ minWidth: 275 }}>
+    <Card>
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           {dayjs(date).format('DD MMM YYYY')}

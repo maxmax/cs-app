@@ -1,2 +1,3 @@
-export { usePost } from './usePost';
-export { usePosts } from './usePosts';
+import { usePost } from './usePost';
+import { usePosts } from './usePosts';
+export { usePosts, usePost }

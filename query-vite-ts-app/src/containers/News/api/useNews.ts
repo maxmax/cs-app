@@ -1,7 +1,5 @@
 import { useQuery } from 'react-query';
-
 import { NewsProps } from '../types';
-
 const API_URL = import.meta.env.VITE_REST_SERVER_API_URL;
 
 export const useNews = () => {
