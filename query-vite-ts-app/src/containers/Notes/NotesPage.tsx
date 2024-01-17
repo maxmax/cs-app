@@ -6,8 +6,7 @@ import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import { Link } from "react-router-dom";
 
-import { usePost } from './hooks';
-import { PostProps } from './types';
+import { usePost } from './api';
 
 export default function NotesPage() {
 
@@ -34,7 +33,7 @@ export default function NotesPage() {
                 {'Back'}
               </Link>
             </div>
-            {/*isFetching ? 'Background Updating...' : ' '*/}
+            {isFetching ? 'Background Updating...' : ' '}
           </>
         )}
       </Box>

@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
 import Notes from './containers/Notes';
-import NotesPage from './containers/NotesPage';
+import NotesPage from './containers/Notes/NotesPage';
+import News from './containers/News';
 
 export default function App() {
   return (
@@ -13,6 +11,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Notes />} />
         <Route path="/notes/:id" element={<NotesPage />} />
+        <Route path="/news" element={<News />} />
       </Routes>
     </Container>
   );

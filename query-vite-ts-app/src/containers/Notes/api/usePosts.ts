@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 
-import { PostProps } from './types';
+import { PostProps } from '../types';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
