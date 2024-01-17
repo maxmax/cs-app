@@ -6,12 +6,12 @@ import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import { Link } from "react-router-dom";
 
-import { useArticle } from './api';
+import { useUser } from './api';
 
-export default function NewsArticle() {
+export default function User() {
 
   const { id } = useParams();
-  const { status, data, error } = useArticle(id ?? '');
+  const { status, data, error } = useUser(id ?? '');
 
   return (
     <Container maxWidth="sm">
@@ -24,12 +24,12 @@ export default function NewsArticle() {
           <>
             <div>
               <Typography variant="h4" component="h1" gutterBottom>
-                {data?.title}
+                {data?.name}
               </Typography>
               <Typography variant="body1" gutterBottom>
-                {data?.content}
+                {data?.email}
               </Typography>
-              <Link to={`/news`}>
+              <Link to={`/users`}>
                 {'Back'}
               </Link>
             </div>
