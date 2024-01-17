@@ -3,7 +3,7 @@ import * as postController from '../controllers/post.controller';
 
 const router = express.Router();
 
-router.get('/feed', postController.getPostsFeed); // Переміщено вище
+router.get('/feed', postController.getPostsFeed);
 router.post('/', postController.createPost);
 router.put('/:id/views', postController.updatePostViews);
 router.put('/publish/:id', postController.publishPost);
