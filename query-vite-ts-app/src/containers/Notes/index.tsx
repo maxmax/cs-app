@@ -5,8 +5,7 @@ import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import { Link } from "react-router-dom";
 
-import { usePosts } from './hooks';
-import { PostProps } from './types';
+import { usePosts } from './api';
 
 export default function Notes() {
 
@@ -27,12 +26,13 @@ export default function Notes() {
             <div>
               {data?.map((post) => (
                 <p key={post.id}>
-                  <Link to={`notes/${post.id}`}>
+                  <Link to={`/notes/${post.id}`}>
                     {post.title}
                   </Link>
                 </p>
               ))}
             </div>
+            {isFetching ? 'Background Updating...' : ' '}
           </>
         )}
       </Box>
