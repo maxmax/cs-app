@@ -3,7 +3,11 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
-import { Link } from "react-router-dom";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import { Virtuoso } from 'react-virtuoso';
 
 import { usePosts } from './api';
 
@@ -22,18 +26,22 @@ export default function Notes() {
         ) : error instanceof Error ? (
           <span>Error: {error.message}</span>
         ) : (
-          <>
-            <div>
-              {data?.map((post) => (
-                <p key={post.id}>
-                  <Link to={`/notes/${post.id}`}>
-                    {post.title}
-                  </Link>
-                </p>
-              ))}
-            </div>
+          <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
+            <List>
+              <Virtuoso
+                style={{ height: '76vh' }}
+                totalCount={data.length}
+                itemContent={index => (
+                  <ListItem sx={{p: 0}} divider>
+                    <ListItemButton to={`/notes/${data[index].id}`}>
+                      <ListItemText primary={data[index].title} />
+                    </ListItemButton>
+                  </ListItem>
+                )}
+              />
+            </List>
             {isFetching ? 'Background Updating...' : ' '}
-          </>
+          </Box>
         )}
       </Box>
     </Container>

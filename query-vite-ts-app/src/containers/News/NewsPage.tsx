@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { useParams } from 'react-router-dom';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
-import { Link } from "react-router-dom";
+import { BasicCard } from "../../components";
 
 import { useArticle } from './api';
 
-export default function NewsArticle() {
+export default function NewsPage() {
 
   const { id } = useParams();
   const { status, data, error } = useArticle(id ?? '');
@@ -22,17 +21,12 @@ export default function NewsArticle() {
           <span>Error: {error.message}</span>
         ) : (
           <>
-            <div>
-              <Typography variant="h4" component="h1" gutterBottom>
-                {data?.title}
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                {data?.content}
-              </Typography>
-              <Link to={`/news`}>
-                {'Back'}
-              </Link>
-            </div>
+            <BasicCard
+              title={data.title}
+              content={data.content}
+              link={'/news'}
+              linkText={'Back'}
+            />
           </>
         )}
       </Box>

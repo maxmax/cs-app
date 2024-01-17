@@ -25,6 +25,11 @@ const pages: Page[] = [
     name: 'News',
     url: '/news',
   },
+  {
+    id: 3,
+    name: 'Users',
+    url: '/users',
+  },
 ];
 
 const BasicBar: React.FC<BasicBarProps> = () => {
@@ -32,6 +37,10 @@ const BasicBar: React.FC<BasicBarProps> = () => {
 
   function handleNavigate(url: string) {
     navigate(url);
+  }
+
+  function handleUserLogin() {
+    console.log('handleUserLogin!');
   }
 
   return (
@@ -52,7 +61,7 @@ const BasicBar: React.FC<BasicBarProps> = () => {
               </Button>
             ))}
           </Box>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit" onClick={() => handleUserLogin()}>Login</Button>
         </Toolbar>
       </AppBar>
     </Box>

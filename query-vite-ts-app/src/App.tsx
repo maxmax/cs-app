@@ -4,7 +4,9 @@ import AppLayout from './components/AppLayout';
 import Notes from './containers/Notes';
 import NotesPage from './containers/Notes/NotesPage';
 import News from './containers/News';
-import NewsArticle from './containers/News/NewsArticle'
+import NewsPage from './containers/News/NewsPage'
+import Users from './containers/Users'
+import User from './containers/Users/User'
 
 export default function App() {
   return (
@@ -13,7 +15,9 @@ export default function App() {
         <Route path="/" element={<Notes />} />
         <Route path="/notes/:id" element={<NotesPage />} />
         <Route path="/news" element={<News />} />
-        <Route path="/news/:id" element={<NewsArticle />} />
+        <Route path="/news/:id" element={<NewsPage />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/users/:id" element={<User />} />
       </Routes>
     </AppLayout>
   );

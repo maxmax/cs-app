@@ -5,12 +5,12 @@ import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import { BasicCard } from "../../components";
 
-import { usePost } from './api';
+import { useUser } from './api';
 
-export default function NotesPage() {
+export default function User() {
 
   const { id } = useParams();
-  const { status, data, error, isFetching } = usePost(id ?? '');
+  const { status, data, error } = useUser(id ?? '');
 
   return (
     <Container maxWidth="sm">
@@ -22,12 +22,11 @@ export default function NotesPage() {
         ) : (
           <>
             <BasicCard
-              title={data.title}
-              content={data.body}
-              link={'/'}
+              title={data.name}
+              content={data.email}
+              link={'/users'}
               linkText={'Back'}
             />
-            {isFetching ? 'Background Updating...' : ' '}
           </>
         )}
       </Box>
