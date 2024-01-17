@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { useParams } from 'react-router-dom';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
-import { Link } from "react-router-dom";
+import { BasicCard } from "../../components";
 
 import { usePost } from './api';
 
@@ -22,17 +21,12 @@ export default function NotesPage() {
           <span>Error: {error.message}</span>
         ) : (
           <>
-            <div>
-              <Typography variant="h4" component="h1" gutterBottom>
-                {data?.title}
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                {data?.body}
-              </Typography>
-              <Link to={`/`}>
-                {'Back'}
-              </Link>
-            </div>
+            <BasicCard
+              title={data.title}
+              content={data.body}
+              link={'/'}
+              linkText={'Back'}
+            />
             {isFetching ? 'Background Updating...' : ' '}
           </>
         )}

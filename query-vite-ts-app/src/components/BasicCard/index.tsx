@@ -8,35 +8,54 @@ import Typography from '@mui/material/Typography';
 import { Link } from "react-router-dom";
 
 interface BasicCardProps {
-  date: string;
-  title: string;
-  author: string;
-  content: string;
-  link: string;
+  date?: string;
+  title?: string;
+  author?: string;
+  content?: string;
+  link?: string;
+  linkText?: string;
 }
 
-const BasicCard: React.FC<BasicCardProps> = ({ date, title, author, content, link }) => {
+const BasicCard: React.FC<BasicCardProps> = ({
+  date,
+  title,
+  author,
+  content,
+  link,
+  linkText
+}) => {
+
   return (
     <Card>
       <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {dayjs(date).format('DD MMM YYYY')}
-        </Typography>
-        <Typography variant="h5" component="div">
-          {title}
-        </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          {author}
-        </Typography>
-        <Typography variant="body2">
-          {content}
-        </Typography>
+        {date &&
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            {dayjs(date).format('DD MMM YYYY')}
+          </Typography>
+        }
+        {title &&
+          <Typography variant="h5" component="div">
+            {title}
+          </Typography>
+        }
+        {author &&
+          <Typography color="text.secondary">
+            {author}
+          </Typography>
+        }
+        {content &&
+          <Typography sx={{ mt: 1.5 }} variant="body2">
+            {content}
+          </Typography>
+        }
       </CardContent>
-      <CardActions>
-        <Link to={link}>
-          <Button size="small">Learn More</Button>
-        </Link>
-      </CardActions>
+      {link && linkText &&
+        <CardActions>
+          <Link to={link}>
+            <Button size="small">{linkText}</Button>
+          </Link>
+        </CardActions>
+      }
     </Card>
   );
 }

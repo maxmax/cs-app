@@ -32,6 +32,7 @@ export default function News() {
                     author={post.author.name}
                     content={post.content}
                     link={`/news/${post.id}`}
+                    linkText={'Learn More'}
                   />
                 </Box>
               ))}

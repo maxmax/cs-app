@@ -35,8 +35,8 @@ export default function Users() {
                 <TableHead>
                   <TableRow>
                     <TableCell>#</TableCell>
-                    <TableCell align="right">User name</TableCell>
-                    <TableCell align="right">User email</TableCell>
+                    <TableCell>User name</TableCell>
+                    <TableCell>User email</TableCell>
                     <TableCell align="right">-/-</TableCell>
                   </TableRow>
                 </TableHead>
@@ -49,8 +49,8 @@ export default function Users() {
                       <TableCell component="th" scope="row">
                         {user.id}
                       </TableCell>
-                      <TableCell align="right">{user.name}</TableCell>
-                      <TableCell align="right">{user.email}</TableCell>
+                      <TableCell>{user.name}</TableCell>
+                      <TableCell>{user.email}</TableCell>
                       <TableCell align="right">
                         <Link to={`/users/${user.id}`}>
                           More
