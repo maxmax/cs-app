@@ -1,18 +1,15 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/common';
-import { Cat } from './cat.entity';
 import { CatsService } from './cats.service';
+import { Cat } from './cat.entity';
+import { CreateCatDto, GetCatsDto, UpdateCatDto } from './dto';
 
 @Controller('cats')
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
-
+  
   @Get()
-  async findAll(@Query('name') name?: string, @Query('breed') breed?: string): Promise<Cat[]> {
-    if (name || breed) {
-      return this.catsService.findByParams(name, breed);
-    }
-
-    return this.catsService.findAll();
+  async findAll(@Query() query: GetCatsDto): Promise<Cat[]> {
+    return this.catsService.findByParams(query);
   }
 
   @Get(':id')
@@ -21,13 +18,13 @@ export class CatsController {
   }
 
   @Post()
-  async create(@Body() cat: Cat): Promise<Cat> {
-    return this.catsService.create(cat);
+  async create(@Body() createCatDto: CreateCatDto): Promise<Cat> {
+    return this.catsService.create(createCatDto);
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() cat: Cat): Promise<Cat> {
-    return this.catsService.update(Number(id), cat);
+  async update(@Param('id') id: string, @Body() updateCatDto: UpdateCatDto): Promise<Cat> {
+    return this.catsService.update(Number(id), updateCatDto);
   }
 
   @Delete(':id')
