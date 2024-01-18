@@ -1,36 +1,61 @@
-import { Injectable } from '@nestjs/common';
-import { CatDto, CreateCatDto } from './dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, Like } from 'typeorm';
+import { Cat } from './cat.entity';
 
 @Injectable()
 export class CatsService {
-  private readonly cats: Array<CatDto> = [
-    { id: '1', name: 'Bazik', breed: 'Scottish Fold', age: 2 },
-    { id: '2', name: 'Murzik', breed: 'Maine Coon', age: 5},
-  ];
+  constructor(
+    @InjectRepository(Cat)
+    private catsRepository: Repository<Cat>,
+  ) {}
 
-  async create(createCatDto: CreateCatDto): Promise<string> {
-    // this.cats.push({
-    //  id: '3',
-    //  ...createCatDto
-    // });
-    return `This action adds a new cat ${createCatDto.name}`;
+  async findAll(): Promise<Cat[]> {
+    return this.catsRepository.find();
   }
 
-  async update(id: string): Promise<string> {
-    return `This action update cat ${id}`;
+  async create(cat: Cat): Promise<Cat> {
+    return this.catsRepository.save(cat);
   }
 
-  async delete(id: string): Promise<string> {
-    const cat = this.cats.find((c) => c.id === id);
-    return cat ? `This action delete cat named ${cat.name} & #${cat.id}` : 'Cat not found';
+  async findById(id: number): Promise<Cat> {
+    const cat = await this.catsRepository.findOne({ where: { id } });
+
+    if (!cat) {
+      throw new NotFoundException(`Cat with ID ${id} not found`);
+    }
+
+    return cat;
   }
 
-  async findAll(): Promise<CatDto[]> {
-    return this.cats;
+  async findByParams(name?: string, breed?: string): Promise<Cat[]> {
+    return this.catsRepository.find({
+      where: {
+        name: Like(`%${name || ''}%`),
+        breed: Like(`%${breed || ''}%`),
+      },
+    });
   }
 
-  async findById(id: string): Promise<string> {
-    const cat = this.cats.find((c) => c.id === id);
-    return cat ? `This action returns a #${cat.id} cat named ${cat.name}, cat breed ${cat.breed}` : 'Cat not found';
+  async update(id: number, cat: Cat): Promise<Cat> {
+    const existingCat = await this.catsRepository.findOne({ where: { id } });
+
+    if (!existingCat) {
+      throw new NotFoundException(`Cat with ID ${id} not found`);
+    }
+
+    await this.catsRepository.update(id, cat);
+
+    return { ...existingCat, ...cat, id };
+  }
+
+  async remove(id: number): Promise<void> {
+    const existingCat = await this.catsRepository.findOne({ where: { id } });
+
+    if (!existingCat) {
+      throw new NotFoundException(`Cat with ID ${id} not found`);
+    }
+
+    await this.catsRepository.remove(existingCat);
   }
 }
