@@ -4,6 +4,7 @@ import { Repository, DeepPartial } from 'typeorm';
 import { User } from './user.entity';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { RegisterUserDto, GetUserDto, UpdateUserDto, СredentialsUserDto } from './dto';
 
 @Injectable()
 export class UsersService {
@@ -13,9 +14,18 @@ export class UsersService {
     private jwtService: JwtService,
   ) {}
 
-  async register(userDto: any): Promise<User> {
+  private async comparePasswords(enteredPassword: string, storedPassword: string): Promise<boolean> {
+    return bcrypt.compare(enteredPassword, storedPassword);
+  }
+
+  private generateToken(user: User): string {
+    const payload = { sub: user.id, username: user.username };
+    return this.jwtService.sign(payload);
+  }
+
+  async register(registerUser: RegisterUserDto): Promise<GetUserDto> {
     const existingUser = await this.usersRepository.findOne({
-      where: [{ username: userDto.username }, { email: userDto.email }],
+      where: [{ username: registerUser.username }, { email: registerUser.email }],
     });
 
     if (existingUser) {
@@ -23,26 +33,35 @@ export class UsersService {
     }
 
     const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(userDto.password, saltRounds);
+    const hashedPassword = await bcrypt.hash(registerUser.password, saltRounds);
 
     const user = new User();
-    user.username = userDto.username;
-    user.email = userDto.email;
+    user.username = registerUser.username;
+    user.email = registerUser.email;
     user.password = hashedPassword;
-    if (userDto.role) {
-      user.role = userDto.role;
-    }
+    // We will use the default role (user) and assign an admin using a different method
+    // if (registerUser.role) {
+    //  user.role = registerUser.role;
+    // }
 
-    const savedUser = await this.usersRepository.save(user);
+    const {
+      id,
+      username,
+      email,
+      role,
+    } = await this.usersRepository.save(user);
 
-    return savedUser;
+    // We control the fields that we return to the new user,
+    // and perhaps we will also add a token so that it can be immediately authorized after registration
+    return {
+      id,
+      username,
+      email,
+      role
+    };
   }
 
-  private async comparePasswords(enteredPassword: string, storedPassword: string): Promise<boolean> {
-    return bcrypt.compare(enteredPassword, storedPassword);
-  }
-
-  async login(credentials: any): Promise<{ token: string }> {
+  async login(credentials: СredentialsUserDto): Promise<{ token: string }> {
     const user = await this.usersRepository.findOne({ where: { username: credentials.username } });
 
     if (!user || !(await this.comparePasswords(credentials.password, user.password))) {
@@ -53,8 +72,37 @@ export class UsersService {
     return { token };
   }
 
-  private generateToken(user: User): string {
-    const payload = { sub: user.id, username: user.username };
-    return this.jwtService.sign(payload);
+  async getAllUsers(): Promise<User[]> {
+    return this.usersRepository.find();
+  }
+
+  async getUserById(id: number): Promise<User> {
+    return this.usersRepository.findOne({ where: { id } });
+  }
+
+  async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.usersRepository.findOne({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    // Applying changes from DTO
+    Object.assign(user, updateUserDto);
+
+    // Saving the updated user
+    const updatedUser = await this.usersRepository.save(user);
+
+    return updatedUser;
+  }
+
+  async deleteUser(id: number): Promise<void> {
+    const user = await this.usersRepository.findOne({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    await this.usersRepository.delete(id);
   }
 }
