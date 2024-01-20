@@ -9,8 +9,14 @@ export class Cat {
   name: string;
 
   @Column()
-  age: number;
+  breed: string;
+  
+  @Column()
+  imgUrl: string;
 
   @Column()
-  breed: string;
+  content: string;
+
+  @Column()
+  age: number;
 }
