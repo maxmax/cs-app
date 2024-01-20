@@ -1,5 +1,5 @@
 import Link from '@/components/Link';
-import Image from '@/components/image';
+import Image from '@/components/Image';
 
 import { getCats } from '@/lib/cats';
 
