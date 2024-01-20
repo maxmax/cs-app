@@ -33,7 +33,7 @@ export default async function Cats() {
                   />
                 </div>
                 <h3 className="mt-6 text-sm text-gray-500">
-                  <Link href={`cats/${cat.id}`}>
+                  <Link href={`/cats/${cat.id}`}>
                     <span className="absolute inset-0"></span>
                     {cat.name}
                   </Link>
