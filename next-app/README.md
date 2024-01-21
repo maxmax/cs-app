@@ -1,5 +1,7 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+*The purpose of this project is for demonstration purposes. Here, we are primarily debugging Next14 methods. To interact with the API, it is necessary to run Nest (the API backend) located in the root of the same repository.*
+
 ## Getting Started
 
 First, run the development server:

@@ -1,3 +1,10 @@
 import { getCats } from './get-cats';
 import { getCat } from './get-cat';
-export { getCats, getCat }
+import { createCat } from './create-cat';
+import { deleteCat } from './delete-cat';
+export {
+  getCats,
+  getCat,
+  createCat,
+  deleteCat
+}

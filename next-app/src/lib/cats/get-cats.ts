@@ -1,3 +1,4 @@
+'use server'
 export async function getCats() {
   const res = await fetch(`http://localhost:3003/cats`, { cache: 'no-store' })
 

@@ -6,7 +6,6 @@ const Header: React.FC = () => {
   return (
     <nav className="bg-gray-800">
       <div className="mx-auto px-4 py-2 flex items-center justify-between">
-        {/* Logo */}
         <Link href="/" className="text-white text-lg font-semibold">
           CatsApp
         </Link>
@@ -19,6 +18,7 @@ const Header: React.FC = () => {
           </a>
         </div>
         <div className="relative ml-3">
+          {/* Auth user */}
           <UserMenu imgUrl={'https://upload.wikimedia.org/wikipedia/commons/3/35/Maine_coon_profile.jpg'} />
         </div>
       </div>

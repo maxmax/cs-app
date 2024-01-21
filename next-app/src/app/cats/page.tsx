@@ -1,27 +1,20 @@
 import Link from '@/components/Link';
 import Image from '@/components/Image';
-
+import CreateCat from '@/components/Buttons/CreateCat';
 import { getCats } from '@/lib/cats';
-
-interface Cat {
-  id: number;
-  name: string;
-  breed: string;
-  imgUrl: string;
-  content: string;
-  age: number;
-}
+import { CatDataProps } from '@/lib/cats/types';
 
 export default async function Cats() {
-  const cats: Cat[] = await getCats();
+  const cats: CatDataProps[] = await getCats();
 
   return (
     <div className="min-h-screen">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-24">
           <h2 className="text-2xl font-bold text-gray-900">Cats</h2>
+          <CreateCat />
           <div className="mt-6 space-y-12 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:space-y-0">
-            {cats.map((cat: Cat) => (
+            {cats.map((cat: CatDataProps) => (
               <div key={cat.id} className="group relative pb-8">
                 <div className="relative h-80 w-full overflow-hidden rounded-lg bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 group-hover:opacity-75 sm:h-64">
                   <Image
