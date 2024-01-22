@@ -10,7 +10,7 @@ export class Cat {
 
   @Column()
   breed: string;
-  
+
   @Column()
   imgUrl: string;
 
@@ -19,4 +19,7 @@ export class Cat {
 
   @Column()
   age: number;
+
+  @Column()
+  createdAt: Date;
 }

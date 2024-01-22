@@ -17,7 +17,10 @@ export class CatsService {
 
   async create(createCatDto: CreateCatDto): Promise<Cat> {
     // Using `create` instead of `save` in the `create` method
-    const cat = this.catsRepository.create(createCatDto);
+    const cat = this.catsRepository.create({
+      ...createCatDto,
+      createdAt: new Date(), // Add the createdAt property with the current date
+    });
     return this.catsRepository.save(cat);
   }
 
@@ -39,6 +42,9 @@ export class CatsService {
       where: {
         name: Like(`%${params.name || ''}%`),
         breed: Like(`%${params.breed || ''}%`),
+      },
+      order: {
+        createdAt: params.order || 'DESC', // 'ASC' for ascending order
       },
     });
   }
