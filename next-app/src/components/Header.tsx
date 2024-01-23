@@ -16,6 +16,9 @@ const Header: React.FC = () => {
           <a href="/cats" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
             Cats
           </a>
+          <a href="/protected" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+            Protected
+          </a>
         </div>
         <div className="relative ml-3">
           {/* Auth user */}
