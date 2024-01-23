@@ -4,7 +4,7 @@ import { Repository, DeepPartial } from 'typeorm';
 import { User } from './user.entity';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { RegisterUserDto, GetUserDto, UpdateUserDto, СredentialsUserDto } from './dto';
+import { RegisterUserDto, GetUserDto, UpdateUserDto, СredentialsUserDto, LoginUserDto } from './dto';
 
 @Injectable()
 export class UsersService {
@@ -61,7 +61,7 @@ export class UsersService {
     };
   }
 
-  async login(credentials: СredentialsUserDto): Promise<{ token: string }> {
+  async login(credentials: СredentialsUserDto): Promise<LoginUserDto> {
     const user = await this.usersRepository.findOne({ where: { username: credentials.username } });
 
     if (!user || !(await this.comparePasswords(credentials.password, user.password))) {
@@ -69,7 +69,15 @@ export class UsersService {
     }
 
     const token = this.generateToken(user);
-    return { token };
+    return {
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+      },
+      token
+    };
   }
 
   async getAllUsers(): Promise<User[]> {

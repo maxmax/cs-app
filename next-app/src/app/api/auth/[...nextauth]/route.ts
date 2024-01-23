@@ -1,11 +1,19 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-type LocalUser = {
-  token: string;
+type UserProps = {
+  id: number;
+  username: string;
+  email: string;
+  role: string;
 };
 
-const authOptions: NextAuthOptions = {
+type LocalUser = {
+  token: string;
+  user: UserProps;
+};
+
+export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
@@ -36,39 +44,48 @@ const authOptions: NextAuthOptions = {
             cache: "no-store",
           }
         );
-        const user = (await resp.json()) as LocalUser;
+        const localUser = (await resp.json()) as LocalUser;
 
         if (!resp.ok) {
           return null;
         }
 
-        return user;
+        // TODO: needs to be fixed on the server side so that the names are consistent and don’t make a fuss
+        const currentUser = {
+          name: localUser.user.username,
+          email: localUser.user.email,
+          role: localUser.user.role
+        }
+
+        return {
+          ...currentUser,
+          apiToken: localUser.token
+        }
       },
     }),
   ],
-  callbacks: {
-    async jwt({ token, user, account }) {
-      if (user) {
-        token.authToken = user.token;
-        // token.role = user.userType;
-      }
-
-      return token;
-    },
-    session: ({ session, token }: { session: any; token: any }) => {
-      if (token) {
-        session.authToken = token.token;
-      }
-      return session;
-    },
-  },
+  //callbacks: {
+  //  async jwt({ token, user, account }) {
+  //    if (user) {
+  //      token.authToken = user.token;
+  //    }
+  //    return token;
+  //  },
+  //  session: ({ session, token }: { session: any; token: any }) => {
+  //    if (token) {
+  //      session.authToken = token.token;
+  //    }
+  //    return session;
+  //  },
+  //},
+  session: { strategy: "jwt" },
   pages: {
     signIn: "/login",
   },
   redirects: {
     async signIn(_context, redirectUrl) {
       if (redirectUrl === "/login" || redirectUrl === "/") {
-        return Promise.resolve("/");
+        return Promise.resolve("/protected");
       }
       return Promise.resolve(null);
     },
