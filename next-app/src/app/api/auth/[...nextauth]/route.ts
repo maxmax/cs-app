@@ -23,7 +23,7 @@ export const authOptions: NextAuthOptions = {
       id: "credentials",
       type: "credentials",
       credentials: {
-        email: { label: "Username", type: "text", placeholder: "jsmith" },
+        email: { label: "Email", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
@@ -65,20 +65,6 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  //callbacks: {
-  //  async jwt({ token, user, account }) {
-  //    if (user) {
-  //      token.authToken = user.token;
-  //    }
-  //    return token;
-  //  },
-  //  session: ({ session, token }: { session: any; token: any }) => {
-  //    if (token) {
-  //      session.authToken = token.token;
-  //    }
-  //    return session;
-  //  },
-  //},
   session: { strategy: "jwt" },
   callbacks: {
     async session ({ session, token, user }) {
