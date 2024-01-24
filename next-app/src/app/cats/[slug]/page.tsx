@@ -1,7 +1,25 @@
+import { Metadata, ResolvingMetadata } from 'next';
 import Image from '@/components/Image';
 import DeleteCat from '@/components/Buttons/DeleteCat';
 import { getCat } from '@/lib/cats';
 import { CatDataProps } from '@/lib/cats/types';
+
+type Props = {
+  params: { id: string }
+}
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+
+  const cat: CatDataProps = await getCat(params.slug);
+
+  return {
+    title: cat.name,
+    description: cat.breed
+  }
+}
 
 export default async function Article({ params }: { params: { slug: string } }) {
   const cat: CatDataProps = await getCat(params.slug);

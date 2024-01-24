@@ -8,13 +8,20 @@ export default withAuth(
   {
     callbacks: {
       authorized: ({ req, token }) => {
-        if (
-          req.nextUrl.pathname.startsWith('/protected') &&
-          token === null
-        ) {
-          return false
+
+        if (req.nextUrl.pathname.startsWith('/protected') && token === null) {
+          return false;
         }
-        return true
+
+        if (req.nextUrl.pathname.startsWith('/office') && token === null) {
+          return false;
+        }
+
+        if (req.nextUrl.pathname.startsWith('/office') && token?.role === 'user') {
+          return false;
+        }
+
+        return true;
       }
     }
   }

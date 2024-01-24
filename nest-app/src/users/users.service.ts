@@ -62,7 +62,7 @@ export class UsersService {
   }
 
   async login(credentials: СredentialsUserDto): Promise<LoginUserDto> {
-    const user = await this.usersRepository.findOne({ where: { username: credentials.username } });
+    const user = await this.usersRepository.findOne({ where: { email: credentials.email } });
 
     if (!user || !(await this.comparePasswords(credentials.password, user.password))) {
       throw new UnauthorizedException('Invalid credentials');

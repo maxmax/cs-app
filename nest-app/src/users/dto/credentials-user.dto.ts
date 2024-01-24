@@ -1,4 +1,4 @@
 export class СredentialsUserDto {
-  username: string;
+  email: string;
   password: string;
 }
