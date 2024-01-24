@@ -84,14 +84,20 @@ export class UsersService {
     return this.usersRepository.find();
   }
 
-  async getUserById(id: number): Promise<User> {
-    return this.usersRepository.findOne({ where: { id } });
-  }
-
-  async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+  async getUserById(id: number, requestingUserId: number): Promise<User> {
     const user = await this.usersRepository.findOne({ where: { id } });
 
-    if (!user) {
+    if (!user || user.id !== requestingUserId) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
+  }
+
+  async updateUser(id: number, updateUserDto: UpdateUserDto, requestingUserId: number): Promise<User> {
+    const user = await this.usersRepository.findOne({ where: { id } });
+
+    if (!user || user.id !== requestingUserId) {
       throw new NotFoundException('User not found');
     }
 
@@ -104,10 +110,10 @@ export class UsersService {
     return updatedUser;
   }
 
-  async deleteUser(id: number): Promise<void> {
+  async deleteUser(id: number, requestingUserId: number): Promise<void> {
     const user = await this.usersRepository.findOne({ where: { id } });
 
-    if (!user) {
+    if (!user || user.id !== requestingUserId) {
       throw new NotFoundException('User not found');
     }
 
