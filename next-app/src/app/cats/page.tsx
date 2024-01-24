@@ -4,6 +4,11 @@ import CreateCat from '@/components/Buttons/CreateCat';
 import { getCats } from '@/lib/cats';
 import { CatDataProps } from '@/lib/cats/types';
 
+export const metadata: Metadata = {
+  title: 'Cats',
+  title: 'Cats collection',
+};
+
 export default async function Cats() {
   const cats: CatDataProps[] = await getCats();
 

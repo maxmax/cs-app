@@ -52,6 +52,7 @@ export const authOptions: NextAuthOptions = {
 
         // TODO: needs to be fixed on the server side so that the names are consistent and don’t make a fuss
         const currentUser = {
+          id: localUser.user.id,
           name: localUser.user.username,
           email: localUser.user.email,
           role: localUser.user.role
@@ -79,6 +80,31 @@ export const authOptions: NextAuthOptions = {
   //  },
   //},
   session: { strategy: "jwt" },
+  callbacks: {
+    async session ({ session, token, user }) {
+      const sanitizedToken = Object.keys(token).reduce((p, c) => {
+        // strip unnecessary properties
+        if (
+          c !== "iat" &&
+          c !== "exp" &&
+          c !== "jti" &&
+          c !== "apiToken"
+        ) {
+          return { ...p, [c]: token[c] }
+        } else {
+          return p
+        }
+      }, {})
+      return { ...session, user: sanitizedToken, apiToken: token.apiToken }
+    },
+    async jwt ({ token, user, account, profile }) {
+      if (typeof user !== "undefined") {
+        // user has just signed in so the user object is populated
+        return user as JWT
+      }
+      return token
+    }
+  },
   pages: {
     signIn: "/login",
   },
