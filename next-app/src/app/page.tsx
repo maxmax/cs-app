@@ -1,6 +1,6 @@
-import { getServerSession } from "next-auth/next"
-import type { NextRequest } from "next/server"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import { getServerSession } from "next-auth/next";
+import type { NextRequest } from "next/server";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Link from '@/components/Link';
 
 export default async function Home(req: NextRequest): Promise<any> {

@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, NotFoundException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DeepPartial } from 'typeorm';
 import { User } from './user.entity';
@@ -19,7 +19,7 @@ export class UsersService {
   }
 
   private generateToken(user: User): string {
-    const payload = { sub: user.id, username: user.username };
+    const payload = { sub: user.id, username: user.username, role: user.role };
     return this.jwtService.sign(payload);
   }
 
@@ -39,10 +39,7 @@ export class UsersService {
     user.username = registerUser.username;
     user.email = registerUser.email;
     user.password = hashedPassword;
-    // We will use the default role (user) and assign an admin using a different method
-    // if (registerUser.role) {
-    //  user.role = registerUser.role;
-    // }
+    // registerUser.role We will use the default role (user) and assign an admin using a different method
 
     const {
       id,
@@ -84,20 +81,20 @@ export class UsersService {
     return this.usersRepository.find();
   }
 
-  async getUserById(id: number, requestingUserId: number): Promise<User> {
+  async getUserById(id: number): Promise<User> {
     const user = await this.usersRepository.findOne({ where: { id } });
 
-    if (!user || user.id !== requestingUserId) {
+    if (!user) {
       throw new NotFoundException('User not found');
     }
 
     return user;
   }
 
-  async updateUser(id: number, updateUserDto: UpdateUserDto, requestingUserId: number): Promise<User> {
+  async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.usersRepository.findOne({ where: { id } });
 
-    if (!user || user.id !== requestingUserId) {
+    if (!user) {
       throw new NotFoundException('User not found');
     }
 
@@ -110,10 +107,10 @@ export class UsersService {
     return updatedUser;
   }
 
-  async deleteUser(id: number, requestingUserId: number): Promise<void> {
+  async deleteUser(id: number): Promise<void> {
     const user = await this.usersRepository.findOne({ where: { id } });
 
-    if (!user || user.id !== requestingUserId) {
+    if (!user) {
       throw new NotFoundException('User not found');
     }
 
