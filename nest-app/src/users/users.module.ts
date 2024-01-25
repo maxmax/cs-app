@@ -1,20 +1,19 @@
+// nest-app/src/users/users.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { JwtModule } from '@nestjs/jwt';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
+import { AuthModule } from '../auth/auth.module'; // Добавьте эту строку
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
-    JwtModule.register({
-      secret: 'your-secret-key', // Replace with your private key
-      signOptions: { expiresIn: '1h' },
-    }),
+    AuthModule,
   ],
   controllers: [UsersController],
-  providers: [UsersService],
-  exports: [UsersService], // Export UsersService so that it is available to other modules
+  providers: [UsersService, JwtAuthGuard],
+  exports: [UsersService],
 })
 export class UsersModule {}

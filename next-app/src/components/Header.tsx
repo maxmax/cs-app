@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC } from "react";
 import Link from '@/components/Link';
 import UserHead from '@/components/UserHead';
 
@@ -18,6 +18,9 @@ const Header: FC = () => {
           </Link>
           <Link href="/protected" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
             Protected
+          </Link>
+          <Link href="/office" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+            Office
           </Link>
         </div>
         <div className="relative ml-3">

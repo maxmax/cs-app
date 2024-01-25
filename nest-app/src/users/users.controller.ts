@@ -1,6 +1,7 @@
-import { Controller, Post, Body, Get, Put, Delete, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Post, Body, Get, Put, Delete, Param, ParseIntPipe, Req, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { RegisterUserDto, UpdateUserDto, СredentialsUserDto } from './dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard'; // Connect custom JWT Guard
 
 @Controller('users')
 export class UsersController {
@@ -16,21 +17,25 @@ export class UsersController {
     return this.usersService.login(credentials);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getAllUsers() {
     return this.usersService.getAllUsers();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getUserById(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.getUserById(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   async updateUser(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.updateUser(id, updateUserDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async deleteUser(@Param('id') id: number) {
     return this.usersService.deleteUser(id);

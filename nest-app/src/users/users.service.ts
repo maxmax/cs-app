@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, NotFoundException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DeepPartial } from 'typeorm';
 import { User } from './user.entity';
@@ -19,7 +19,7 @@ export class UsersService {
   }
 
   private generateToken(user: User): string {
-    const payload = { sub: user.id, username: user.username };
+    const payload = { sub: user.id, username: user.username, role: user.role };
     return this.jwtService.sign(payload);
   }
 
@@ -39,10 +39,7 @@ export class UsersService {
     user.username = registerUser.username;
     user.email = registerUser.email;
     user.password = hashedPassword;
-    // We will use the default role (user) and assign an admin using a different method
-    // if (registerUser.role) {
-    //  user.role = registerUser.role;
-    // }
+    // registerUser.role We will use the default role (user) and assign an admin using a different method
 
     const {
       id,
@@ -85,7 +82,13 @@ export class UsersService {
   }
 
   async getUserById(id: number): Promise<User> {
-    return this.usersRepository.findOne({ where: { id } });
+    const user = await this.usersRepository.findOne({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
   }
 
   async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
