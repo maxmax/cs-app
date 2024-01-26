@@ -4,6 +4,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { createUser } from '@/lib/auth';
 
 type LoginInput = {
+  username: string;
   email: string;
   password: string;
 }
@@ -13,7 +14,11 @@ type PageProps = {
 }
 
 export default function RegistrationPage({searchParams}: PageProps) {
-  const [inputs, setInputs] = useState<LoginInput>({ username: "", email: "", password: "" });
+  const [inputs, setInputs] = useState<LoginInput>({
+    username: "",
+    email: "",
+    password: ""
+  });
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
@@ -23,7 +28,7 @@ export default function RegistrationPage({searchParams}: PageProps) {
 
   const handleSubmit = async (event:FormEvent) => {
     event.preventDefault();
-    
+
     const user = await createUser({
       username: inputs.username,
       email: inputs.email,

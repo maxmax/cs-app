@@ -1,10 +1,15 @@
 import { getServerSession } from "next-auth/next";
-import type { NextRequest } from "next/server";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from '@/lib/authOptions';
 import Link from '@/components/Link';
 
-export default async function Home(req: NextRequest): Promise<any> {
+type CustomUser = {
+  username?: string | null | undefined;
+};
+
+export default async function Home(): Promise<any> {
   const session = await getServerSession(authOptions);
+
+  console.log('session---', session);
 
   return (
     <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
@@ -12,10 +17,10 @@ export default async function Home(req: NextRequest): Promise<any> {
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">Welcome to app</h1>
         <div className="mt-5 items-center justify-center gap-x-6">
           {
-            session !== null
+            session !== null && session?.user
               ? <>
                   <h1 className='leading-loose text-[2rem] font-extrabold text-accent'>
-                    Hi {session?.user.name}!
+                    Hi {session.user?.name || (session.user as CustomUser)?.username}!
                   </h1>
                   <Link href="/protected" className="text-sm font-semibold text-gray-900">
                     Show more to protected page <span aria-hidden="true">&rarr;</span>
