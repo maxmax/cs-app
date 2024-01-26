@@ -13,7 +13,7 @@ const DeleteCat: FC<DeleteCatProps> = ({ id }) => {
 
   const deleteCatForm = async () => await deleteCat(id);
 
-  if (!session?.user?.name) {
+  if (!session?.user) {
     return null;
   }
 

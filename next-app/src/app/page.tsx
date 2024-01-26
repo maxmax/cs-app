@@ -9,8 +9,6 @@ type CustomUser = {
 export default async function Home(): Promise<any> {
   const session = await getServerSession(authOptions);
 
-  console.log('session---', session);
-
   return (
     <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
       <div className="text-center">
