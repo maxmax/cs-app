@@ -4,12 +4,12 @@ import DeleteCat from '@/components/Buttons/DeleteCat';
 import { getCat } from '@/lib/cats';
 import { CatDataProps } from '@/lib/cats/types';
 
-type Props = {
-  params: { id: string }
+type MetadataProps = {
+  params: { slug: string }
 }
 
 export async function generateMetadata(
-  { params, searchParams }: Props,
+  { params }: MetadataProps,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
 
