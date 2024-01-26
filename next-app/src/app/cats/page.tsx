@@ -1,15 +1,11 @@
+import type { Metadata } from 'next';
 import Link from '@/components/Link';
 import Image from '@/components/Image';
 import CreateCat from '@/components/Buttons/CreateCat';
 import { getCats } from '@/lib/cats';
 import { CatDataProps } from '@/lib/cats/types';
 
-type MetadataProps = {
-  title: string;
-  description: string;
-}
-
-export const metadata: MetadataProps = {
+export const metadata: Metadata = {
   title: 'Cats',
   description: 'Cats collection',
 };
