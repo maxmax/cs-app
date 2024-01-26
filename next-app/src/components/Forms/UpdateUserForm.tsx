@@ -25,7 +25,7 @@ const UpdateUserForm: FC<UpdateUserFormProps> = ({ user, onClose, deleteUserForm
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center text-left z-10 bg-black bg-opacity-50">
       <div className="bg-white p-8 max-w-md w-full rounded-md shadow-md">
         <h2 className="text-2xl font-bold mb-4">Update User</h2>
         <form onSubmit={handleSubmit}>

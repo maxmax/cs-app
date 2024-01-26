@@ -1,6 +1,6 @@
 "use client"
-import { useSession } from "next-auth/react";
 import React, { FC } from 'react';
+import { useClientSession } from '@/lib/auth';
 import { deleteCat } from '@/lib/cats';
 
 interface DeleteCatProps {
@@ -9,7 +9,7 @@ interface DeleteCatProps {
 
 const DeleteCat: FC<DeleteCatProps> = ({ id }) => {
 
-  const { data: session } = useSession();
+  const session  = useClientSession();
 
   const deleteCatForm = async () => await deleteCat(id);
 

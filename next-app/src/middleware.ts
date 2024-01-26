@@ -13,6 +13,10 @@ export default withAuth(
           return false;
         }
 
+        if (req.nextUrl.pathname.startsWith('/profile') && token === null) {
+          return false;
+        }
+
         if (req.nextUrl.pathname.startsWith('/office') && token === null) {
           return false;
         }
