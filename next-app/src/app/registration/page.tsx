@@ -2,6 +2,7 @@
 import { signIn } from "next-auth/react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { createUser } from '@/lib/auth';
+import Link from '@/components/Link';
 
 type LoginInput = {
   username: string;
@@ -44,6 +45,7 @@ export default function RegistrationPage({searchParams}: PageProps) {
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+          <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
@@ -115,7 +117,14 @@ export default function RegistrationPage({searchParams}: PageProps) {
               </p>
             )}
           </form>
-
+          <div className="mt-8">
+            <p className="text-sm text-gray-500">
+              Already have an account?
+              <Link href="/login" className="ml-2 text-blue-500 hover:underline">
+                Log in here.
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </>

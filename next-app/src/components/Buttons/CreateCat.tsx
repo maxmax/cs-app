@@ -1,11 +1,11 @@
 "use client"
-import { useSession } from "next-auth/react";
 import { useState, FC } from 'react';
+import { useClientSession } from '@/lib/auth';
 import CreateCatForm from '@/components/Forms/CreateCatForm';
 
 const CreateCat: FC = () => {
 
-  const { data: session } = useSession();
+  const session  = useClientSession();
 
   const [isCreateCatFormOpen, setCreateCatFormOpen] = useState(false);
 

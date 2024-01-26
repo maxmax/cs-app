@@ -1,6 +1,7 @@
 "use client";
 import { signIn } from "next-auth/react";
 import { ChangeEvent, FormEvent, useState } from "react";
+import Link from '@/components/Link';
 
 type LoginInput = {
   email: string;
@@ -27,11 +28,12 @@ export default function LoginPage({searchParams}: PageProps) {
       password: inputs.password,
       callbackUrl: '/' });
   }
-  
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+          <h2 className="text-2xl font-bold mb-6 text-center">Sign In</h2>
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
@@ -85,7 +87,14 @@ export default function LoginPage({searchParams}: PageProps) {
               </p>
             )}
           </form>
-
+          <div className="mt-8">
+            <p className="text-sm text-gray-500">
+              {`Don't have an account yet?`}
+              <Link href="/registration" className="ml-2 text-blue-500 hover:underline">
+                Register here.
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </>
