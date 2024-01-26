@@ -5,7 +5,7 @@ import Link from '@/components/Link';
 
 interface UserMenuProps {
   logout: Function;
-  slug: string;
+  slug: string | number;
   name: string;
 }
 
