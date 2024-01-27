@@ -5,13 +5,14 @@ import UpdateUser from '@/components/Buttons/UpdateUser';
 
 export default async function Profile({ params }: { params: { id: string } }) {
 
+  const defaultImage = '/default-portrait.jpg';
+
   const session = await getUserServerSession();
 
   if (!session || !("apiToken" in session) || !session?.user?.id) {
     return null;
   }
 
-  //TODO: change tu public profile or create a separate page for a public profile, we’ll think about it later
   const user = await getUserSlug(params.id, session.apiToken);
 
   const isMyProfile = user.id == session?.user?.id;
@@ -21,11 +22,12 @@ export default async function Profile({ params }: { params: { id: string } }) {
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-4xl flex">
         <div className="flex-shrink-0 mr-8">
           <Image
-            src={user.image || 'https://upload.wikimedia.org/wikipedia/commons/3/35/Maine_coon_profile.jpg'} // Укажите путь к изображению профиля или используйте изображение по умолчанию
+            src={user.imgUrl || defaultImage}
             alt="Profile"
-            className="h-50 w-50 rounded-full"
-            width={220}
-            height={200}
+            className="h-60 w-50 rounded-full object-cover object-center rounded-full"
+            width={240}
+            height={240}
+            style={{objectFit: "cover"}}
           />
           {isMyProfile &&
             <div className="flex justify-center">
