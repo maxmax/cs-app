@@ -2,7 +2,7 @@
 import { revalidatePath } from 'next/cache';
 
 export async function deleteUser(id: number, token: string) {
-  const res = await fetch(`http://localhost:3003/users/${id}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${id}`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${token}`,

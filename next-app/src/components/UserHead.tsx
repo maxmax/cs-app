@@ -15,7 +15,7 @@ const UserHead: FC = () => {
   return (
     <>
       {session?.user && session?.user?.username && session?.user?.id ?
-        <UserMenu logout={handleLogout} slug={session?.user?.id} name={session?.user?.username} />
+        <UserMenu logout={handleLogout} slug={session?.user?.username} name={session?.user?.username} />
         :
         <Link href="/login" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
           Sign in
