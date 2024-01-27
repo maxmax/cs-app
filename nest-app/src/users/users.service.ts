@@ -96,6 +96,21 @@ export class UsersService {
     };
   }
 
+  async getUserBySlug(slug: string): Promise<GetUserDto> {
+    const user = await this.usersRepository.findOne({ where: { username: slug } });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+    };
+  }
+
   async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.usersRepository.findOne({ where: { id } });
 

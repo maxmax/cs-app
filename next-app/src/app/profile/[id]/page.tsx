@@ -1,5 +1,5 @@
 import { getUserServerSession } from '@/lib/auth';
-import { getUser } from '@/lib/users';
+import { getUserSlug } from '@/lib/users';
 import Image from '@/components/Image';
 import UpdateUser from '@/components/Buttons/UpdateUser';
 
@@ -12,7 +12,7 @@ export default async function Profile({ params }: { params: { id: string } }) {
   }
 
   //TODO: change tu public profile or create a separate page for a public profile, we’ll think about it later
-  const user = await getUser(params.id, session.apiToken);
+  const user = await getUserSlug(params.id, session.apiToken);
 
   const isMyProfile = user.id == session?.user?.id;
 

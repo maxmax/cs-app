@@ -29,6 +29,11 @@ export class UsersController {
     return this.usersService.getUserById(id);
   }
 
+  @Get('public/:slug')
+  async getUserBySlug(@Param('slug') slug: string) {
+    return this.usersService.getUserBySlug(slug);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Put(':id')
   async updateUser(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
