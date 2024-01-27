@@ -4,6 +4,12 @@ export interface UserDataProps {
   email?: string;
   password?: string;
   role?: string;
+  imgUrl?: string;
+  firstName?: string;
+  lastName?: string;
+  company?: string;
+  contacts?: string;
+  about?: string;
 }
 
 export interface UpdateUserDataProps {
@@ -11,4 +17,10 @@ export interface UpdateUserDataProps {
   username?: string;
   email?: string;
   role?: string;
+  imgUrl?: string;
+  firstName?: string;
+  lastName?: string;
+  company?: string;
+  contacts?: string;
+  about?: string;
 }

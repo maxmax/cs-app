@@ -93,6 +93,12 @@ export class UsersService {
       username: user.username,
       email: user.email,
       role: user.role,
+      imgUrl: user.imgUrl,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      company: user.company,
+      contacts: user.contacts,
+      about: user.about,
     };
   }
 
@@ -108,6 +114,12 @@ export class UsersService {
       username: user.username,
       email: user.email,
       role: user.role,
+      imgUrl: user.imgUrl,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      company: user.company,
+      contacts: user.contacts,
+      about: user.about,
     };
   }
 
@@ -117,6 +129,8 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
+
+    // TODO: add a check that only the admin can change the role
 
     // Applying changes from DTO
     Object.assign(user, updateUserDto);

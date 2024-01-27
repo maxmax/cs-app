@@ -3,4 +3,10 @@ export class GetUserDto {
   username: string;
   email: string;
   role: string;
+  imgUrl?: string;
+  firstName?: string;
+  lastName?: string;
+  company?: string;
+  contacts?: string;
+  about?: string;
 }

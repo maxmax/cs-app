@@ -35,3 +35,13 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## typeorm
+### Use migrations
+
+```bash
+npm run migration:create
+npm run migration:generate
+npm run migration:run
+npm run migration:revert
+```
