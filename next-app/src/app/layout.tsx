@@ -26,7 +26,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Provider session={session}>
-          <Header />
+          <Header role={session?.user?.role} />
           {children}
         </Provider>
       </body>

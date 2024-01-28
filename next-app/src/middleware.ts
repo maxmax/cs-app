@@ -17,11 +17,11 @@ export default withAuth(
           return false;
         }
 
-        if (req.nextUrl.pathname.startsWith('/office') && token === null) {
+        if (req.nextUrl.pathname.startsWith('/dashboard') && token === null) {
           return false;
         }
 
-        if (req.nextUrl.pathname.startsWith('/office') && token?.role === 'user') {
+        if (req.nextUrl.pathname.startsWith('/dashboard') && token?.role === 'user') {
           return false;
         }
 
