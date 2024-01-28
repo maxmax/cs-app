@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 // import { Suspense } from 'react';
 import Search from '@/ui/search';
+import Pagination from '@/ui/pagination';
 import Link from '@/components/Link';
 import Image from '@/components/Image';
 import CreateCat from '@/components/Buttons/CreateCat';
@@ -59,6 +60,9 @@ export default async function Cats({
                 <p className="text-base font-semibold text-gray-900">{cat.breed}</p>
               </div>
             ))}
+          </div>
+          <div className="mt-5 flex w-full justify-center">
+            <Pagination totalPages={data.totalPages} />
           </div>
         </div>
       </div>
