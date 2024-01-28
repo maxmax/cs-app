@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+// import { Suspense } from 'react';
+import Search from '@/ui/search';
 import Link from '@/components/Link';
 import Image from '@/components/Image';
 import CreateCat from '@/components/Buttons/CreateCat';
@@ -10,15 +12,32 @@ export const metadata: Metadata = {
   description: 'Cats collection',
 };
 
-export default async function Cats() {
-  const data: CatDataProps[] = await getCats();
+export default async function Cats({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+    page?: string;
+  };
+}) {
+
+  const query = searchParams?.query || '';
+  const currentPage = Number(searchParams?.page) || 1;
+
+  console.log('query----', query);
+  console.log('currentPage----', currentPage);
+
+  const data: CatDataProps[] = await getCats(query, currentPage);
 
   return (
     <div className="min-h-screen">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-24">
           <h2 className="text-2xl font-bold text-gray-900">Cats</h2>
-          <CreateCat />
+          <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
+            <Search placeholder="Search invoices..." />
+            <CreateCat />
+          </div>
           <div className="mt-6 space-y-12 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:space-y-0">
             {data.cats.map((cat: CatDataProps) => (
               <div key={cat.id} className="group relative pb-8">
