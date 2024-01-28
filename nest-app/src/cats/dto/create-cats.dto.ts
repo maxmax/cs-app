@@ -4,5 +4,4 @@ export class CreateCatDto {
   readonly imgUrl: string;
   readonly content: string;
   readonly age: number;
-  readonly createdAt: string;
 }

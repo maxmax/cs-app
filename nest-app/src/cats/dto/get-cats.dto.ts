@@ -1,9 +1,26 @@
+import { IsOptional, IsNumber, IsString } from 'class-validator';
+import { CatDto } from './cat.dto';
+
+export class CatsParamsDto {
+  @IsOptional()
+  @IsNumber()
+  page?: number;
+
+  @IsOptional()
+  @IsString()
+  take?: number;
+
+  @IsOptional()
+  @IsString()
+  breed?: string;
+
+  @IsOptional()
+  @IsString()
+  order?: string;
+}
+
 export class GetCatsDto {
-  readonly name?: string;
-  readonly breed?: string;
-  readonly imgUrl?: string;
-  readonly content?: string;
-  readonly age?: number;
-  readonly createdAt?: string;
-  readonly order: 'ASC' | 'DESC';
+  readonly cats: CatDto[];
+  readonly totalPages: number;
+  readonly totalCats: number;
 }
