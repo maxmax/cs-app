@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like } from 'typeorm';
 import { Cat } from './cat.entity';
-import { CreateCatDto, GetCatsDto, UpdateCatDto } from './dto';
+import { CatDto, CreateCatDto, CatsParamsDto, GetCatsDto, UpdateCatDto } from './dto';
 
 @Injectable()
 export class CatsService {
@@ -15,7 +15,7 @@ export class CatsService {
     return this.catsRepository.find();
   }
 
-  async create(createCatDto: CreateCatDto): Promise<Cat> {
+  async create(createCatDto: CreateCatDto): Promise<CatDto> {
     // Using `create` instead of `save` in the `create` method
     const cat = this.catsRepository.create({
       ...createCatDto,
@@ -24,7 +24,7 @@ export class CatsService {
     return this.catsRepository.save(cat);
   }
 
-  async findById(id: number): Promise<Cat> {
+  async findById(id: number): Promise<CatDto> {
     // Instead of using findOne and manually checking for the presence of the cat, you can use findOneOrFail,
     // which will automatically throw an exception if the cat is not found.
     // return this.catsRepository.findOneOrFail({ where: { id } });
@@ -37,19 +37,27 @@ export class CatsService {
     return cat;
   }
 
-  async findByParams(params: GetCatsDto): Promise<Cat[]> {
-    return this.catsRepository.find({
+  async findByParams(params: CatsParamsDto): Promise<GetCatsDto> {
+    const { page = 1, take = 3, breed = '', order = 'DESC' } = params;
+    const skip = (page - 1) * take;
+
+    const [cats, totalCats] = await this.catsRepository.findAndCount({
       where: {
-        name: Like(`%${params.name || ''}%`),
-        breed: Like(`%${params.breed || ''}%`),
+        breed: Like(`%${breed}%`),
       },
       order: {
-        createdAt: params.order || 'DESC', // 'ASC' for ascending order
+        createdAt: order as 'ASC' | 'DESC',
       },
+      take,
+      skip,
     });
+
+    const totalPages = Math.ceil(totalCats / take);
+
+    return { cats, totalPages, totalCats };
   }
 
-  async update(id: number, updateCatDto: UpdateCatDto): Promise<Cat> {
+  async update(id: number, updateCatDto: UpdateCatDto): Promise<CatDto> {
     // using `findOneOrFail` instead of `findOne` to automatically throw an exception if cat is not found
     try {
       await this.catsRepository.findOneOrFail({ where: { id } });
@@ -59,7 +67,7 @@ export class CatsService {
 
     await this.catsRepository.update(id, updateCatDto);
 
-    return { ...updateCatDto, id } as Cat;
+    return { ...updateCatDto, id } as CatDto;
   }
 
   async remove(id: number): Promise<void> {

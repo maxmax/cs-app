@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Cats() {
-  const cats: CatDataProps[] = await getCats();
+  const data: CatDataProps[] = await getCats();
 
   return (
     <div className="min-h-screen">
@@ -20,7 +20,7 @@ export default async function Cats() {
           <h2 className="text-2xl font-bold text-gray-900">Cats</h2>
           <CreateCat />
           <div className="mt-6 space-y-12 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:space-y-0">
-            {cats.map((cat: CatDataProps) => (
+            {data.cats.map((cat: CatDataProps) => (
               <div key={cat.id} className="group relative pb-8">
                 <div className="relative h-80 w-full overflow-hidden rounded-lg bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 group-hover:opacity-75 sm:h-64">
                   <Image
