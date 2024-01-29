@@ -1,8 +1,9 @@
 "use client"
 import React, { useState, FC } from 'react';
-import UpdateUserForm from '@/components/Forms/UpdateUserForm';
 import { getUser, deleteUser, updateUser } from '@/lib/users';
 import { UserDataProps } from '@/lib/users/types';
+import Dialog from '@/components/Dialog';
+import UpdateUserForm from '@/components/Forms/UpdateUserForm';
 
 interface UpdateUserProps {
   id: number;
@@ -43,12 +44,14 @@ const UpdateUser: FC<UpdateUserProps> = ({ id, apiToken }) => {
       </button>
 
       {isUpdateUserFormOpen && (
-        <UpdateUserForm
-          onClose={closeUpdateUserForm}
-          user={currentUser as UserDataProps}
-          deleteUserForm={deleteUserForm}
-          updateUserForm={updateUserForm}
-        />
+        <Dialog onClose={closeUpdateUserForm} title={'Update User'}>
+          <UpdateUserForm
+            onClose={closeUpdateUserForm}
+            user={currentUser as UserDataProps}
+            deleteUserForm={deleteUserForm}
+            updateUserForm={updateUserForm}
+          />
+        </Dialog>
       )}
     </>
   );
