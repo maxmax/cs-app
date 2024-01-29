@@ -14,16 +14,14 @@ export default async function Dashboard() {
   const users: UserDataProps[] = await getUsers(session.apiToken as string);
 
   return (
-    <div className="min-h-screen">
-      <div className="mx-auto max-w-2xl py-8 sm:py-8 lg:max-w-none px-4 sm:px-6 lg:px-8">
-        <PageHeader title={'Admin dashboard'} />
-        <div className="mx-auto my-8">
-          <DashboardCharts />
-        </div>
-        <div className="mx-auto my-8">
-          <DashboardUsers users={users} apiToken={session.apiToken} />
-        </div>
+    <>
+      <PageHeader title={'Admin dashboard'} />
+      <div className="mx-auto my-8">
+        <DashboardCharts />
       </div>
-    </div>
+      <div className="mx-auto my-8">
+        <DashboardUsers users={users} apiToken={session.apiToken} />
+      </div>
+    </>
   );
 }
