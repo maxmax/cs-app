@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 // import { Suspense } from 'react';
 import CreateCat from '@/components/Buttons/CreateCat';
 import { getCats } from '@/lib/cats';
-import { CatDataProps } from '@/lib/cats/types';
+import { GetCatDataProps, CatDataProps } from '@/lib/cats/types';
 import Search from '@/ui/search';
 import Pagination from '@/ui/pagination';
 import Link from '@/components/Link';
@@ -26,7 +26,7 @@ export default async function Cats({
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
 
-  const data: CatDataProps[] = await getCats(query, currentPage);
+  const data: GetCatDataProps = await getCats(query, currentPage);
 
   return (
     <>

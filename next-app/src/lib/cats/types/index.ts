@@ -14,3 +14,9 @@ export interface CatDataProps {
   breed: string;
   age: number;
 }
+
+export interface GetCatDataProps {
+  cats: CatDataProps[];
+  breed: string;
+  totalPages: number;
+}
