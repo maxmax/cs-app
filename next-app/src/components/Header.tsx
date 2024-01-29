@@ -20,11 +20,6 @@ const Header: FC<HeaderProps> = ({ role }) => {
           <Link href="/cats" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
             Cats
           </Link>
-          {role &&
-            <Link href="/protected" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-              Protected
-            </Link>
-          }
           {role && role === 'admin' &&
             <Link href="/dashboard" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
               Dashboard

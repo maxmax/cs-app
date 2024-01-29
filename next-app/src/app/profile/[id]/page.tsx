@@ -1,7 +1,7 @@
 import { getUserServerSession } from '@/lib/auth';
 import { getUserSlug } from '@/lib/users';
 import Image from '@/components/Image';
-import UpdateUser from '@/components/Buttons/UpdateUser';
+import Link from '@/components/Link';
 
 export default async function Profile({ params }: { params: { id: string } }) {
 
@@ -31,7 +31,12 @@ export default async function Profile({ params }: { params: { id: string } }) {
           />
           {isMyProfile &&
             <div className="flex justify-center">
-              <UpdateUser id={user.id ?? 0} apiToken={session.apiToken as string} />
+              <Link
+                href={`/profile/settings`}
+                className="mt-5 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring focus:border-indigo-300 active:bg-indigo-800"
+              >
+                Settings
+              </Link>
             </div>
           }
         </div>

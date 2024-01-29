@@ -4,8 +4,8 @@ import { UserDataProps } from '@/lib/users/types';
 
 interface UpdateUserFormProps {
   user: UserDataProps;
-  onClose: () => void;
-  deleteUserForm: () => Promise<void>;
+  onClose?: () => void;
+  deleteUserForm?: () => Promise<void>;
   updateUserForm: (userData: UserDataProps) => Promise<void>;
 }
 
@@ -60,7 +60,7 @@ const UpdateUserForm: FC<UpdateUserFormProps> = ({ user, onClose, deleteUserForm
       </div>
       <div className="mb-4">
         <label htmlFor={'company'} className="block text-sm font-medium text-gray-700">
-          {'Company'}
+          {'Company name'}
         </label>
         <input
           type="text"
@@ -75,8 +75,7 @@ const UpdateUserForm: FC<UpdateUserFormProps> = ({ user, onClose, deleteUserForm
         <label htmlFor={'contacts'} className="block text-sm font-medium text-gray-700">
           {'Contacts'}
         </label>
-        <input
-          type="text"
+        <textarea
           id={'contacts'}
           name={'contacts'}
           value={attributes['contacts']}
@@ -88,8 +87,7 @@ const UpdateUserForm: FC<UpdateUserFormProps> = ({ user, onClose, deleteUserForm
         <label htmlFor={'about'} className="block text-sm font-medium text-gray-700">
           {'About'}
         </label>
-        <input
-          type="text"
+        <textarea
           id={'about'}
           name={'about'}
           value={attributes['about']}
@@ -98,16 +96,20 @@ const UpdateUserForm: FC<UpdateUserFormProps> = ({ user, onClose, deleteUserForm
         />
       </div>
       <div className="flex justify-end pt-5">
-        <button type="button" className="mr-5 text-gray-500" onClick={onClose}>
-          Cancel
-        </button>
-        <button
-          type="button"
-          className="mr-5 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md"
-          onClick={deleteUserForm}
-        >
-          Delete User
-        </button>
+        {!!onClose &&
+          <button type="button" className="mr-5 text-gray-500" onClick={onClose}>
+            Cancel
+          </button>
+        }
+        {!!deleteUserForm &&
+          <button
+            type="button"
+            className="mr-5 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md"
+            onClick={deleteUserForm}
+          >
+            Delete User
+          </button>
+        }
         <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md">
           Update
         </button>
