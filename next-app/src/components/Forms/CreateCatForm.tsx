@@ -19,10 +19,8 @@ const CreateCatForm: FC<CreateCatFormProps> = ({ onClose }) => {
   const [attributes, setAttributes] = useState(defaultAttributes);
 
   const handleChangeAttributes = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setAttributes((prevAttributes) => ({
-      ...prevAttributes,
-      [e.target.name]: e.target.value,
-    }));
+    const { name, value } = e.target;
+    setAttributes((prevAttributes) => ({ ...prevAttributes, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -30,13 +28,15 @@ const CreateCatForm: FC<CreateCatFormProps> = ({ onClose }) => {
 
     await createCat({
       ...attributes,
-      age: Number(attributes.age)
+      age: Number.isNaN(Number(attributes.age)) ? 0 : Number(attributes.age),
     });
+
+    setAttributes(defaultAttributes);
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      {Object.entries(attributes).map(([field, value]) => (
+      {Object.keys(attributes).map((field) => (
         field !== 'date' && field !== 'age' && (
           <FormControl
             key={field}
@@ -44,9 +44,9 @@ const CreateCatForm: FC<CreateCatFormProps> = ({ onClose }) => {
             label={field}
             id={field}
             name={field}
-            value={value}
+            value={attributes[field as keyof typeof attributes]} // TS guarantees that field is the key of the attributes object.
             onChange={handleChangeAttributes}
-            required={true}
+            required
           />
         )
       ))}

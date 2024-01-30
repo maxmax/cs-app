@@ -28,6 +28,8 @@ export default async function Cats({
 
   const data: GetCatDataProps = await getCats(query, currentPage);
 
+  // await new Promise((resolve) => setTimeout(resolve, 4000));
+
   return (
     <>
       <PageHeader title={'Cats'} />

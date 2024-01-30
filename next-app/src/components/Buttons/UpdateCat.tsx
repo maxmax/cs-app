@@ -16,7 +16,7 @@ const UpdateCat: FC<UpdateCatProps> = ({ id }) => {
 
   const session  = useClientSession();
 
-  const openCreateCatForm = async () => {
+  const openUpdateCatForm = async () => {
     const cat = await getCat(id);
     if (cat?.id) {
       setCurrentCat(cat);
@@ -24,7 +24,7 @@ const UpdateCat: FC<UpdateCatProps> = ({ id }) => {
     }
   };
 
-  const closeCreateCatForm = () => {
+  const closeUpdateCatForm = () => {
     setCreateCatFormOpen(false);
   };
 
@@ -35,14 +35,14 @@ const UpdateCat: FC<UpdateCatProps> = ({ id }) => {
   return (
     <>
       <button
-        onClick={openCreateCatForm}
+        onClick={openUpdateCatForm}
         className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring focus:border-indigo-300 active:bg-indigo-800"
       >
         Update
       </button>
       {isCreateCatFormOpen && currentCat && (
-        <Dialog onClose={closeCreateCatForm} title={'Update Cat'}>
-          <UpdateCatForm onClose={closeCreateCatForm} cat={currentCat as CatDataProps} />
+        <Dialog onClose={closeUpdateCatForm} title={'Update Cat'}>
+          <UpdateCatForm onClose={closeUpdateCatForm} cat={currentCat as CatDataProps} />
         </Dialog>
       )}
     </>

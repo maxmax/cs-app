@@ -2,7 +2,6 @@ export interface UserDataProps {
   id?: number;
   username?: string;
   email?: string;
-  password?: string;
   role?: string;
   imgUrl?: string;
   firstName?: string;

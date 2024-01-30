@@ -11,7 +11,7 @@ interface UpdateUserProps {
 }
 
 const UpdateUser: FC<UpdateUserProps> = ({ id, apiToken }) => {
-  const [currentUser, setCurrentUser] = useState<UserDataProps | {}>({});
+  const [currentUser, setCurrentUser] = useState<UserDataProps | null>(null);
   const [isUpdateUserFormOpen, setUpdateUserFormOpen] = useState<boolean>(false);
 
   const openUpdateUserForm = async () => {
@@ -43,7 +43,7 @@ const UpdateUser: FC<UpdateUserProps> = ({ id, apiToken }) => {
         Settings
       </button>
 
-      {isUpdateUserFormOpen && (
+      {isUpdateUserFormOpen && currentUser && (
         <Dialog onClose={closeUpdateUserForm} title={'Update User'}>
           <UpdateUserForm
             onClose={closeUpdateUserForm}

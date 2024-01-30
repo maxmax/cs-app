@@ -1,10 +1,20 @@
-import { Injectable, UnauthorizedException, NotFoundException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DeepPartial } from 'typeorm';
+import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { RegisterUserDto, GetUserDto, UpdateUserDto, СredentialsUserDto, LoginUserDto } from './dto';
+import {
+  RegisterUserDto,
+  GetUserDto,
+  UpdateUserDto,
+  СredentialsUserDto,
+  LoginUserDto,
+} from './dto';
 
 @Injectable()
 export class UsersService {
@@ -14,7 +24,10 @@ export class UsersService {
     private jwtService: JwtService,
   ) {}
 
-  private async comparePasswords(enteredPassword: string, storedPassword: string): Promise<boolean> {
+  private async comparePasswords(
+    enteredPassword: string,
+    storedPassword: string,
+  ): Promise<boolean> {
     return bcrypt.compare(enteredPassword, storedPassword);
   }
 
@@ -25,7 +38,10 @@ export class UsersService {
 
   async register(registerUser: RegisterUserDto): Promise<GetUserDto> {
     const existingUser = await this.usersRepository.findOne({
-      where: [{ username: registerUser.username }, { email: registerUser.email }],
+      where: [
+        { username: registerUser.username },
+        { email: registerUser.email },
+      ],
     });
 
     if (existingUser) {
@@ -39,14 +55,16 @@ export class UsersService {
     user.username = registerUser.username;
     user.email = registerUser.email;
     user.password = hashedPassword;
+    user.createdAt = new Date();
+    user.imgUrl = '';
+    user.firstName = '';
+    user.lastName = '';
+    user.company = '';
+    user.contacts = '';
+    user.about = '';
     // registerUser.role We will use the default role (user) and assign an admin using a different method
 
-    const {
-      id,
-      username,
-      email,
-      role,
-    } = await this.usersRepository.save(user);
+    const { id, username, email, role } = await this.usersRepository.save(user);
 
     // We control the fields that we return to the new user,
     // and perhaps we will also add a token so that it can be immediately authorized after registration
@@ -54,14 +72,19 @@ export class UsersService {
       id,
       username,
       email,
-      role
+      role,
     };
   }
 
   async login(credentials: СredentialsUserDto): Promise<LoginUserDto> {
-    const user = await this.usersRepository.findOne({ where: { email: credentials.email } });
+    const user = await this.usersRepository.findOne({
+      where: { email: credentials.email },
+    });
 
-    if (!user || !(await this.comparePasswords(credentials.password, user.password))) {
+    if (
+      !user ||
+      !(await this.comparePasswords(credentials.password, user.password))
+    ) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
@@ -73,7 +96,7 @@ export class UsersService {
         email: user.email,
         role: user.role,
       },
-      token
+      token,
     };
   }
 
@@ -103,7 +126,9 @@ export class UsersService {
   }
 
   async getUserBySlug(slug: string): Promise<GetUserDto> {
-    const user = await this.usersRepository.findOne({ where: { username: slug } });
+    const user = await this.usersRepository.findOne({
+      where: { username: slug },
+    });
 
     if (!user) {
       throw new NotFoundException('User not found');
@@ -130,12 +155,16 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    // TODO: add a check that only the admin can change the role
+    // We explicitly indicate which fields we want to update
+    user.username = updateUserDto.username || user.username;
+    user.email = updateUserDto.email || user.email;
+    user.imgUrl = updateUserDto.imgUrl || user.imgUrl;
+    user.firstName = updateUserDto.firstName || user.firstName;
+    user.lastName = updateUserDto.lastName || user.lastName;
+    user.company = updateUserDto.company || user.company;
+    user.contacts = updateUserDto.contacts || user.contacts;
+    user.about = updateUserDto.about || user.about;
 
-    // Applying changes from DTO
-    Object.assign(user, updateUserDto);
-
-    // Saving the updated user
     const updatedUser = await this.usersRepository.save(user);
 
     return updatedUser;
