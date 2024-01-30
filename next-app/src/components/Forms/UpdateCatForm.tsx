@@ -1,22 +1,16 @@
 "use client"
 import React, { FC, useState, ChangeEvent } from 'react';
-import { createCat } from '@/lib/cats';
+import { CatDataProps } from '@/lib/cats/types';
+import { updateCat } from '@/lib/cats';
 import FormControl from '@/components/Forms/FormControl';
 
 interface CreateCatFormProps {
   onClose: () => void;
+  cat: CatDataProps;
 }
 
-const defaultAttributes = {
-	name: '',
-  breed: '',
-  imgUrl: '',
-  content: '',
-  age: 0,
-};
-
-const CreateCatForm: FC<CreateCatFormProps> = ({ onClose }) => {
-  const [attributes, setAttributes] = useState(defaultAttributes);
+const UpdateCatForm: FC<CreateCatFormProps> = ({ onClose, cat }) => {
+  const [attributes, setAttributes] = useState(cat);
 
   const handleChangeAttributes = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setAttributes((prevAttributes) => ({
@@ -28,7 +22,7 @@ const CreateCatForm: FC<CreateCatFormProps> = ({ onClose }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await createCat({
+    await updateCat({
       ...attributes,
       age: Number(attributes.age)
     });
@@ -37,7 +31,7 @@ const CreateCatForm: FC<CreateCatFormProps> = ({ onClose }) => {
   return (
     <form onSubmit={handleSubmit}>
       {Object.entries(attributes).map(([field, value]) => (
-        field !== 'date' && field !== 'age' && (
+        field !== 'id' && field !== 'createdAt' && field !== 'age' && (
           <FormControl
             key={field}
             className={'mb-4'}
@@ -65,11 +59,11 @@ const CreateCatForm: FC<CreateCatFormProps> = ({ onClose }) => {
           Cancel
         </button>
         <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md">
-          Create Cat
+          Update Cat
         </button>
       </div>
     </form>
   );
 };
 
-export default CreateCatForm;
+export default UpdateCatForm;

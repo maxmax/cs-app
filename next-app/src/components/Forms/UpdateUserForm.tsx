@@ -12,7 +12,7 @@ interface UpdateUserFormProps {
 const UpdateUserForm: FC<UpdateUserFormProps> = ({ user, onClose, deleteUserForm, updateUserForm }) => {
   const [attributes, setAttributes] = useState<UserDataProps>(user);
 
-  const handleChangeAttributes = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeAttributes = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setAttributes((prevAttributes) => ({
       ...prevAttributes,
       [e.target.name]: e.target.value,

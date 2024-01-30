@@ -1,7 +1,7 @@
 'use server'
 import { notFound } from 'next/navigation';
 
-export async function getCat(slug: string) {
+export async function getCat(slug: string | number) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cats/${slug}`)
 
   if (!res.ok) {
