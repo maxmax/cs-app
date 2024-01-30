@@ -21,7 +21,7 @@ const UpdateUserPage: FC<UpdateUserProps> = ({ id, apiToken }) => {
         console.error('Error fetching data:', error);
       }
     })();
-  }, []);
+  }, [id, apiToken]);
 
   const updateUserForm = async (userData: UserDataProps) => {
     await updateUser(userData, apiToken);
