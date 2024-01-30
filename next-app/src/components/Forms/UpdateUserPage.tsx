@@ -10,26 +10,33 @@ interface UpdateUserProps {
 }
 
 const UpdateUserPage: FC<UpdateUserProps> = ({ id, apiToken }) => {
-  const [currentUser, setCurrentUser] = useState<UserDataProps | {}>({});
+  const [currentUser, setCurrentUser] = useState<UserDataProps | null>(null);
 
   useEffect(() => {
-    (async () => {
+    const fetchData = async () => {
       try {
         const user = await getUser(id, apiToken);
         setCurrentUser(user);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
-    })();
+    };
+    
+    fetchData();
   }, [id, apiToken]);
 
   const updateUserForm = async (userData: UserDataProps) => {
-    await updateUser(userData, apiToken);
+    try {
+      await updateUser(userData, apiToken);
+      setCurrentUser(userData);
+    } catch (error) {
+      console.error('Error updating user:', error);
+    }
   };
 
   return (
     <div className="pt-8">
-      {('id' in currentUser) &&
+      {currentUser?.id &&
         <UpdateUserForm
           user={currentUser as UserDataProps}
           updateUserForm={updateUserForm}

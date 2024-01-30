@@ -4,18 +4,19 @@ import { CatDataProps } from '@/lib/cats/types';
 import { updateCat } from '@/lib/cats';
 import FormControl from '@/components/Forms/FormControl';
 
-interface CreateCatFormProps {
+interface UpdateCatFormProps {
   onClose: () => void;
   cat: CatDataProps;
 }
 
-const UpdateCatForm: FC<CreateCatFormProps> = ({ onClose, cat }) => {
-  const [attributes, setAttributes] = useState(cat);
+const UpdateCatForm: FC<UpdateCatFormProps> = ({ onClose, cat }) => {
+  const [attributes, setAttributes] = useState<CatDataProps>(cat);
 
   const handleChangeAttributes = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
     setAttributes((prevAttributes) => ({
       ...prevAttributes,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
   };
 
@@ -27,7 +28,7 @@ const UpdateCatForm: FC<CreateCatFormProps> = ({ onClose, cat }) => {
   return (
     <form onSubmit={handleSubmit}>
       {Object.entries(attributes).map(([field, value]) => (
-        field !== 'id' && field !== 'createdAt' && field !== 'age' && (
+        !['id', 'createdAt', 'age'].includes(field) && (
           <FormControl
             key={field}
             className={'mb-4'}
@@ -36,7 +37,7 @@ const UpdateCatForm: FC<CreateCatFormProps> = ({ onClose, cat }) => {
             name={field}
             value={value}
             onChange={handleChangeAttributes}
-            required={true}
+            required
           />
         )
       ))}
