@@ -1,6 +1,7 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import Image from '@/components/Image';
 import DeleteCat from '@/components/Buttons/DeleteCat';
+import UpdateCat from '@/components/Buttons/UpdateCat';
 import { getCat } from '@/lib/cats';
 import { CatDataProps } from '@/lib/cats/types';
 
@@ -23,7 +24,7 @@ export async function generateMetadata(
 
 export default async function Article({ params }: { params: { slug: string } }) {
   const cat: CatDataProps = await getCat(params.slug);
-  
+
   return (
     <div className="container mx-auto mt-8 flex py-16 sm:py-24 lg:py-24">
       <div className="w-1/2 pr-8">
@@ -42,7 +43,14 @@ export default async function Article({ params }: { params: { slug: string } }) 
         <p className="text-base font-semibold mb-4">{cat.breed}</p>
         <p className="text-gray-500 mb-4">Age: {cat.age}</p>
         <p className="text-lg mb-4">{cat.content}</p>
-        <DeleteCat id={cat.id} />
+        <div className="flex mt-8">
+          <div className="mr-5">
+            <UpdateCat id={cat.id} />
+          </div>
+          <div>
+            <DeleteCat id={cat.id} />
+          </div>
+        </div>
       </div>
     </div>
   );

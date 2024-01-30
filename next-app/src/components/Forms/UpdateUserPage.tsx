@@ -23,24 +23,15 @@ const UpdateUserPage: FC<UpdateUserProps> = ({ id, apiToken }) => {
     })();
   }, []);
 
-  const closeUpdateUserForm = () => {
-    setUpdateUserFormOpen(false);
-  };
-
   const updateUserForm = async (userData: UserDataProps) => {
     await updateUser(userData, apiToken);
   };
 
-  // const deleteUserForm = async () => {
-  //  await deleteUser(id, apiToken);
-  // };
-
   return (
     <div className="pt-8">
-      {currentUser?.id &&
+      {('id' in currentUser) &&
         <UpdateUserForm
           user={currentUser as UserDataProps}
-          // deleteUserForm={deleteUserForm}
           updateUserForm={updateUserForm}
         />
       }

@@ -6,6 +6,8 @@ export interface CreateCatDataProps {
   age: number;
 }
 
+export interface UpdateCatDataProps extends CreateCatDataProps {}
+
 export interface CatDataProps {
   id: number;
   name: string;
