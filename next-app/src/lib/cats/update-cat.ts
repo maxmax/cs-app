@@ -3,9 +3,9 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { UpdateCatDataProps, CatDataProps } from './types';
 
-export async function updateCat(catData: UpdateCatDataProps): Promise<void> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cats`, {
-    method: 'POST',
+export async function updateCat(id: number, catData: UpdateCatDataProps): Promise<void> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cats/${id}`, {
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },

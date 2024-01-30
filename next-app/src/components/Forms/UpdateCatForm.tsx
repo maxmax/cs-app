@@ -21,11 +21,7 @@ const UpdateCatForm: FC<CreateCatFormProps> = ({ onClose, cat }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    await updateCat({
-      ...attributes,
-      age: Number(attributes.age)
-    });
+    await updateCat(cat.id, attributes);
   };
 
   return (
