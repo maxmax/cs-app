@@ -1,7 +1,22 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { CatsService } from './cats.service';
 import { Cat } from './cat.entity';
-import { CatDto, CreateCatDto, GetCatsDto, CatsParamsDto, UpdateCatDto } from './dto';
+import {
+  CatDto,
+  CreateCatDto,
+  GetCatsDto,
+  CatsParamsDto,
+  UpdateCatDto,
+} from './dto';
 
 @Controller('cats')
 export class CatsController {
@@ -17,13 +32,19 @@ export class CatsController {
     return this.catsService.findById(Number(id));
   }
 
-  @Post()
-  async create(@Body() createCatDto: CreateCatDto): Promise<CatDto> {
-    return this.catsService.create(createCatDto);
+  @Post(':userId')
+  async create(
+    @Param('userId') userId: string,
+    @Body() createCatDto: CreateCatDto,
+  ): Promise<Cat> {
+    return this.catsService.create(createCatDto, Number(userId));
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateCatDto: UpdateCatDto): Promise<CatDto> {
+  async update(
+    @Param('id') id: string,
+    @Body() updateCatDto: UpdateCatDto,
+  ): Promise<CatDto> {
     return this.catsService.update(Number(id), updateCatDto);
   }
 

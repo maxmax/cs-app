@@ -2,33 +2,49 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like } from 'typeorm';
 import { Cat } from './cat.entity';
-import { CatDto, CreateCatDto, CatsParamsDto, GetCatsDto, UpdateCatDto } from './dto';
+import {
+  CatDto,
+  CreateCatDto,
+  CatsParamsDto,
+  GetCatsDto,
+  UpdateCatDto,
+} from './dto';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class CatsService {
   constructor(
     @InjectRepository(Cat)
     private catsRepository: Repository<Cat>,
+    private usersService: UsersService,
   ) {}
 
-  async findAll(): Promise<Cat[]> {
-    return this.catsRepository.find();
+  async findAll(): Promise<CatDto[]> {
+    const cats = await this.catsRepository.find();
+    return cats;
   }
 
-  async create(createCatDto: CreateCatDto): Promise<CatDto> {
+  async create(createCatDto: CreateCatDto, authorId: number): Promise<Cat> {
+    const author = await this.usersService.getUserById(authorId);
+
+    if (!author) {
+      throw new NotFoundException('User not found');
+    }
     // Using `create` instead of `save` in the `create` method
     const cat = this.catsRepository.create({
       ...createCatDto,
       createdAt: new Date(), // Add the createdAt property with the current date
+      author,
     });
-    return this.catsRepository.save(cat);
+    const savedCat: Cat = await this.catsRepository.save(cat);
+    return savedCat;
   }
 
-  async findById(id: number): Promise<CatDto> {
+  async findById(id: number): Promise<Cat> {
     // Instead of using findOne and manually checking for the presence of the cat, you can use findOneOrFail,
     // which will automatically throw an exception if the cat is not found.
     // return this.catsRepository.findOneOrFail({ where: { id } });
-    const cat = await this.catsRepository.findOne({ where: { id } });
+    const cat: Cat = await this.catsRepository.findOne({ where: { id } });
 
     if (!cat) {
       throw new NotFoundException(`Cat with ID ${id} not found`);

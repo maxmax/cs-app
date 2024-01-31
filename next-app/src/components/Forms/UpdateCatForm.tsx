@@ -28,7 +28,7 @@ const UpdateCatForm: FC<UpdateCatFormProps> = ({ onClose, cat }) => {
   return (
     <form onSubmit={handleSubmit}>
       {Object.entries(attributes).map(([field, value]) => (
-        !['id', 'createdAt', 'age'].includes(field) && (
+        !['id', 'createdAt', 'age', 'authorId'].includes(field) && (
           <FormControl
             key={field}
             className={'mb-4'}
