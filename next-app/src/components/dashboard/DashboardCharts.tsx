@@ -2,7 +2,7 @@
 import React, { FC, Suspense, useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { DashboardLineChart, DashboardBarChart } from '@/components/dashboard';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import SkeletonCharts from '@/ui/skeleton-charts';
 // const DashboardLineChart = dynamic(() => import('@/components/dashboard/dashboardLineChart'), { ssr: false })
 // const DashboardBarChart = dynamic(() => import('@/components/dashboard/dashboardBarChart'), { ssr: false })
 
@@ -29,7 +29,7 @@ const DashboardCharts: FC<DashboardChartsProps> = () => {
           </div>
         </div>
       :
-        <LoadingSpinner />
+        <SkeletonCharts />
       }
     </>
   );

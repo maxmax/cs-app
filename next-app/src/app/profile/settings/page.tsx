@@ -1,6 +1,4 @@
 import { getUserServerSession } from '@/lib/auth';
-import { getUser, deleteUser, updateUser } from '@/lib/users';
-import { UserDataProps } from '@/lib/users/types';
 import PageHeader from '@/components/PageHeader';
 import UpdateUserPage from '@/components/Forms/UpdateUserPage';
 
