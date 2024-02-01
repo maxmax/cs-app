@@ -3,11 +3,12 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { UpdateCatDataProps, CatDataProps } from './types';
 
-export async function updateCat(id: number, catData: UpdateCatDataProps): Promise<void> {
+export async function updateCat(id: number, catData: UpdateCatDataProps, token: string): Promise<void> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cats/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(catData),
   });

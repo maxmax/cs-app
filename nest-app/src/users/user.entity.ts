@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, Unique } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  Unique,
+  OneToMany,
+} from 'typeorm';
+import { Cat } from '../cats/cat.entity';
 
 @Entity()
 @Unique(['username', 'email'])
@@ -39,4 +46,7 @@ export class User {
 
   @Column()
   createdAt: Date;
+
+  @OneToMany(() => Cat, (cat) => cat.author)
+  cats: Cat[];
 }

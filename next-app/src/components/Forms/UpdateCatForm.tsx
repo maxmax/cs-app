@@ -7,9 +7,10 @@ import FormControl from '@/components/Forms/FormControl';
 interface UpdateCatFormProps {
   onClose: () => void;
   cat: CatDataProps;
+  apiToken: string;
 }
 
-const UpdateCatForm: FC<UpdateCatFormProps> = ({ onClose, cat }) => {
+const UpdateCatForm: FC<UpdateCatFormProps> = ({ onClose, cat, apiToken }) => {
   const [attributes, setAttributes] = useState<CatDataProps>(cat);
 
   const handleChangeAttributes = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -22,13 +23,13 @@ const UpdateCatForm: FC<UpdateCatFormProps> = ({ onClose, cat }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await updateCat(cat.id, attributes);
+    await updateCat(cat.id, attributes, apiToken);
   };
 
   return (
     <form onSubmit={handleSubmit}>
       {Object.entries(attributes).map(([field, value]) => (
-        !['id', 'createdAt', 'age'].includes(field) && (
+        !['id', 'createdAt', 'age', 'authorId'].includes(field) && (
           <FormControl
             key={field}
             className={'mb-4'}

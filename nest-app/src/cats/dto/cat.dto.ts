@@ -1,4 +1,11 @@
-import { IsOptional, IsNumber, IsString, IsDateString } from 'class-validator';
+import {
+  IsOptional,
+  IsNumber,
+  IsString,
+  IsDateString,
+  IsObject,
+} from 'class-validator';
+import { User } from '../../users/user.entity';
 
 export class CatDto {
   @IsOptional()
@@ -28,4 +35,12 @@ export class CatDto {
   @IsOptional()
   @IsDateString()
   createdAt: Date;
+
+  @IsOptional()
+  @IsObject()
+  author: User;
+
+  @IsOptional()
+  @IsNumber()
+  authorId: number;
 }

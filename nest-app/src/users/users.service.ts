@@ -2,6 +2,7 @@ import {
   Injectable,
   UnauthorizedException,
   NotFoundException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -100,7 +101,11 @@ export class UsersService {
     };
   }
 
-  async getAllUsers(): Promise<User[]> {
+  async getAllUsers(role: string): Promise<User[]> {
+    // Check role admin
+    if (role !== 'admin') {
+      throw new NotFoundException('Users not found');
+    }
     return this.usersRepository.find();
   }
 
@@ -148,11 +153,16 @@ export class UsersService {
     };
   }
 
-  async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+  async updateUser(
+    id: number,
+    updateUserDto: UpdateUserDto,
+    userId: number,
+    role: string,
+  ): Promise<User> {
     const user = await this.usersRepository.findOne({ where: { id } });
 
-    if (!user) {
-      throw new NotFoundException('User not found');
+    if (role !== 'admin' && !user && user.id !== userId) {
+      throw new ForbiddenException('Access denied');
     }
 
     // We explicitly indicate which fields we want to update
@@ -170,11 +180,11 @@ export class UsersService {
     return updatedUser;
   }
 
-  async deleteUser(id: number): Promise<void> {
+  async deleteUser(id: number, userId: number, role: string): Promise<void> {
     const user = await this.usersRepository.findOne({ where: { id } });
 
-    if (!user) {
-      throw new NotFoundException('User not found');
+    if (role !== 'admin' && !user && user.id !== userId) {
+      throw new ForbiddenException('Access denied');
     }
 
     await this.usersRepository.delete(id);

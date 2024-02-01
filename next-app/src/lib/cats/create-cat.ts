@@ -3,11 +3,12 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { CreateCatDataProps, CatDataProps } from './types';
 
-export async function createCat(catData: CreateCatDataProps): Promise<CatDataProps> {
+export async function createCat(catData: CreateCatDataProps, token: string): Promise<CatDataProps> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cats`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(catData),
   });
