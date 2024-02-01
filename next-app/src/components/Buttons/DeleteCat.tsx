@@ -11,11 +11,11 @@ const DeleteCat: FC<DeleteCatProps> = ({ id }) => {
 
   const session  = useClientSession();
 
-  const deleteCatForm = async () => await deleteCat(id);
-
-  if (!session?.user) {
+  if (!session?.user && !session?.apiToken) {
     return null;
   }
+
+  const deleteCatForm = async () => await deleteCat(id, session.apiToken);
 
   return (
     <>

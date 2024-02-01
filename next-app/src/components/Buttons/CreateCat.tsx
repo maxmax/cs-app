@@ -18,7 +18,7 @@ const CreateCat: FC = () => {
     setCreateCatFormOpen(false);
   };
 
-  if (!session?.user?.id) {
+  if (!session?.user?.id && !session?.apiToken) {
     return null;
   }
 
@@ -33,7 +33,7 @@ const CreateCat: FC = () => {
       </button>
       {isCreateCatFormOpen && (
         <Dialog onClose={closeCreateCatForm} title={'Create Cat'}>
-          <CreateCatForm onClose={closeCreateCatForm} userId={session?.user.id} />
+          <CreateCatForm onClose={closeCreateCatForm} apiToken={session?.apiToken} />
         </Dialog>
       )}
     </>

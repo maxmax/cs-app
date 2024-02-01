@@ -7,6 +7,8 @@ import {
   Body,
   Param,
   Query,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { CatsService } from './cats.service';
 import { Cat } from './cat.entity';
@@ -17,6 +19,7 @@ import {
   CatsParamsDto,
   UpdateCatDto,
 } from './dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('cats')
 export class CatsController {
@@ -32,24 +35,35 @@ export class CatsController {
     return this.catsService.findById(Number(id));
   }
 
-  @Post(':userId')
+  @UseGuards(JwtAuthGuard)
+  @Post()
   async create(
-    @Param('userId') userId: string,
+    @Req() request,
     @Body() createCatDto: CreateCatDto,
   ): Promise<Cat> {
-    return this.catsService.create(createCatDto, Number(userId));
+    // Assume the user information is attached to the request
+    // You can get the user information from the request, as it should be attached after using JwtAuthGuard
+    // Now, you can access request.user.userId
+    const userId = request.user.userId;
+    // return this.catsService.create(createCatDto, Number(userId));
+    return this.catsService.create(createCatDto, userId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   async update(
+    @Req() request,
     @Param('id') id: string,
     @Body() updateCatDto: UpdateCatDto,
   ): Promise<CatDto> {
-    return this.catsService.update(Number(id), updateCatDto);
+    const userId = request.user.userId;
+    return this.catsService.update(Number(id), updateCatDto, userId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<void> {
-    return this.catsService.remove(Number(id));
+  async remove(@Req() request, @Param('id') id: string): Promise<void> {
+    const userId = request.user.userId;
+    return this.catsService.remove(Number(id), userId);
   }
 }

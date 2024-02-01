@@ -5,7 +5,7 @@ import FormControl from '@/components/Forms/FormControl';
 
 interface CreateCatFormProps {
   onClose: () => void;
-  userId: number | string;
+  apiToken: string;
 }
 
 const defaultAttributes = {
@@ -16,7 +16,7 @@ const defaultAttributes = {
   age: 1,
 };
 
-const CreateCatForm: FC<CreateCatFormProps> = ({ onClose, userId }) => {
+const CreateCatForm: FC<CreateCatFormProps> = ({ onClose, apiToken }) => {
   const [attributes, setAttributes] = useState(defaultAttributes);
 
   const handleChangeAttributes = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -30,7 +30,7 @@ const CreateCatForm: FC<CreateCatFormProps> = ({ onClose, userId }) => {
     await createCat({
       ...attributes,
       age: Number(attributes.age),
-    }, Number(userId));
+    }, apiToken);
 
     setAttributes(defaultAttributes);
   };

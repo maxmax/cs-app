@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like } from 'typeorm';
 import { Cat } from './cat.entity';
@@ -24,19 +28,22 @@ export class CatsService {
     return cats;
   }
 
-  async create(createCatDto: CreateCatDto, authorId: number): Promise<Cat> {
-    const author = await this.usersService.getUserById(authorId);
+  async create(createCatDto: CreateCatDto, userId: number): Promise<Cat> {
+    const author = await this.usersService.getUserById(userId);
 
-    if (!author) {
+    // if (!author || !author.id) {
+    if (author.id !== userId) {
       throw new NotFoundException('User not found');
     }
-    // Using `create` instead of `save` in the `create` method
+
     const cat = this.catsRepository.create({
       ...createCatDto,
-      createdAt: new Date(), // Add the createdAt property with the current date
+      createdAt: new Date(),
+      authorId: author.id,
       author,
     });
-    const savedCat: Cat = await this.catsRepository.save(cat);
+
+    const savedCat: CatDto = await this.catsRepository.save(cat);
     return savedCat;
   }
 
@@ -73,26 +80,45 @@ export class CatsService {
     return { cats, totalPages, totalCats };
   }
 
-  async update(id: number, updateCatDto: UpdateCatDto): Promise<CatDto> {
-    // using `findOneOrFail` instead of `findOne` to automatically throw an exception if cat is not found
-    try {
-      await this.catsRepository.findOneOrFail({ where: { id } });
-    } catch (error) {
+  async update(
+    id: number,
+    updateCatDto: UpdateCatDto,
+    userId: number,
+  ): Promise<Cat> {
+    const cat = await this.catsRepository.findOne({ where: { id } });
+
+    if (!cat) {
       throw new NotFoundException(`Cat with ID ${id} not found`);
     }
 
-    await this.catsRepository.update(id, updateCatDto);
+    // Check if the user is the author of the cat or an admin
+    if (cat.authorId !== userId) {
+      throw new ForbiddenException('Access denied');
+    }
 
-    return { ...updateCatDto, id } as CatDto;
+    // Update cat properties
+    cat.name = updateCatDto.name || cat.name;
+    cat.breed = updateCatDto.breed || cat.breed;
+    cat.imgUrl = updateCatDto.imgUrl || cat.imgUrl;
+    cat.content = updateCatDto.content || cat.content;
+    cat.age = updateCatDto.age || cat.age;
+
+    const updatedCat = await this.catsRepository.save(cat);
+    return updatedCat;
   }
 
-  async remove(id: number): Promise<void> {
-    const existingCat = await this.catsRepository.findOne({ where: { id } });
+  async remove(id: number, userId: number): Promise<void> {
+    const cat = await this.catsRepository.findOne({ where: { id } });
 
-    if (!existingCat) {
+    if (!cat) {
       throw new NotFoundException(`Cat with ID ${id} not found`);
     }
 
-    await this.catsRepository.remove(existingCat);
+    // Check if the user is the author of the cat or an admin
+    if (cat.authorId !== userId) {
+      throw new ForbiddenException('Access denied');
+    }
+
+    await this.catsRepository.remove(cat);
   }
 }

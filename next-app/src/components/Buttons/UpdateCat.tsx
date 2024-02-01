@@ -28,7 +28,7 @@ const UpdateCat: FC<UpdateCatProps> = ({ id }) => {
     setCreateCatFormOpen(false);
   };
 
-  if (!session?.user) {
+  if (!session?.user && !session?.apiToken) {
     return null;
   }
 
@@ -42,7 +42,7 @@ const UpdateCat: FC<UpdateCatProps> = ({ id }) => {
       </button>
       {isCreateCatFormOpen && currentCat && (
         <Dialog onClose={closeUpdateCatForm} title={'Update Cat'}>
-          <UpdateCatForm onClose={closeUpdateCatForm} cat={currentCat as CatDataProps} />
+          <UpdateCatForm onClose={closeUpdateCatForm} cat={currentCat as CatDataProps} apiToken={session?.apiToken}/>
         </Dialog>
       )}
     </>
