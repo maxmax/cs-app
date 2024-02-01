@@ -57,13 +57,15 @@ export class CatsController {
     @Body() updateCatDto: UpdateCatDto,
   ): Promise<CatDto> {
     const userId = request.user.userId;
-    return this.catsService.update(Number(id), updateCatDto, userId);
+    const role = request.user.role;
+    return this.catsService.update(Number(id), updateCatDto, userId, role);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(@Req() request, @Param('id') id: string): Promise<void> {
     const userId = request.user.userId;
-    return this.catsService.remove(Number(id), userId);
+    const role = request.user.role;
+    return this.catsService.remove(Number(id), userId, role);
   }
 }

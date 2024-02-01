@@ -8,7 +8,7 @@ import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-  // In short, super(); in this context is used to call the constructor of the parent class and ensure 
+  // In short, super(); in this context is used to call the constructor of the parent class and ensure
   // that the AuthGuard base class is configured correctly.
   constructor(private readonly usersService: UsersService) {
     super();
@@ -32,10 +32,12 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     // if (requestedUserId && requestedUserId === user.userId) {
     //  return true;
     // }
-    if (!request.params.id || +request.params.id === user.userId) {
+
+    // just checking an authorized user, then we’ll move the verification method section here
+    if (user.userId) {
       return true;
     }
 
-    throw new ForbiddenException('Access denied');
+    throw new ForbiddenException('Access denied!');
   }
 }

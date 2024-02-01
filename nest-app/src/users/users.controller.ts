@@ -1,4 +1,15 @@
-import { Controller, Post, Body, Get, Put, Delete, Param, ParseIntPipe, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Put,
+  Delete,
+  Param,
+  ParseIntPipe,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { RegisterUserDto, UpdateUserDto, СredentialsUserDto } from './dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'; // Connect custom JWT Guard
@@ -19,8 +30,9 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getAllUsers() {
-    return this.usersService.getAllUsers();
+  async getAllUsers(@Req() request) {
+    const role = request.user.role;
+    return this.usersService.getAllUsers(role);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -37,15 +49,20 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Put(':id')
   async updateUser(
+    @Req() request,
     @Param('id') id: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    return this.usersService.updateUser(id, updateUserDto);
+    const role = request.user.role;
+    const userId = request.user.userId;
+    return this.usersService.updateUser(id, updateUserDto, role, userId);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async deleteUser(@Param('id') id: number) {
-    return this.usersService.deleteUser(id);
+  async deleteUser(@Req() request, @Param('id') id: number) {
+    const role = request.user.role;
+    const userId = request.user.userId;
+    return this.usersService.deleteUser(id, role, userId);
   }
 }

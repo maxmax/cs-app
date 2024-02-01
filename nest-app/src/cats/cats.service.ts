@@ -31,7 +31,6 @@ export class CatsService {
   async create(createCatDto: CreateCatDto, userId: number): Promise<Cat> {
     const author = await this.usersService.getUserById(userId);
 
-    // if (!author || !author.id) {
     if (author.id !== userId) {
       throw new NotFoundException('User not found');
     }
@@ -84,6 +83,7 @@ export class CatsService {
     id: number,
     updateCatDto: UpdateCatDto,
     userId: number,
+    role: string,
   ): Promise<Cat> {
     const cat = await this.catsRepository.findOne({ where: { id } });
 
@@ -91,8 +91,8 @@ export class CatsService {
       throw new NotFoundException(`Cat with ID ${id} not found`);
     }
 
-    // Check if the user is the author of the cat or an admin
-    if (cat.authorId !== userId) {
+    // Check if the user is the author of the cat or an admin (then, as a general method, we add it to jwt guard)
+    if (role !== 'admin' && cat.authorId !== userId) {
       throw new ForbiddenException('Access denied');
     }
 
@@ -107,15 +107,15 @@ export class CatsService {
     return updatedCat;
   }
 
-  async remove(id: number, userId: number): Promise<void> {
+  async remove(id: number, userId: number, role: string): Promise<void> {
     const cat = await this.catsRepository.findOne({ where: { id } });
 
     if (!cat) {
       throw new NotFoundException(`Cat with ID ${id} not found`);
     }
 
-    // Check if the user is the author of the cat or an admin
-    if (cat.authorId !== userId) {
+    // Check if the role & user is the author of the cat or an admin
+    if (role !== 'admin' && cat.authorId !== userId) {
       throw new ForbiddenException('Access denied');
     }
 
